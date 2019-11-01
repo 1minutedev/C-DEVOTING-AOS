@@ -11,7 +11,7 @@ public class SettingActivity extends Activity {
     private static final String TAG = SettingActivity.class.toString();
 
     private Spinner spinnerMode;
-    private ArrayAdapter<String> modeAdapter;
+    private ArrayAdapter<CharSequence> modeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,7 @@ public class SettingActivity extends Activity {
 
     private void initLayout(){
         //contents 모드
-        String[] modeList = getResources().getStringArray(R.array.mode);
-        modeAdapter = new ArrayAdapter<String>(this, R.layout.activity_setting, modeList);
+        modeAdapter = ArrayAdapter.createFromResource(this, R.array.mode, android.R.layout.simple_spinner_dropdown_item);
 
         spinnerMode = findViewById(R.id.spinner_mode);
         spinnerMode.setAdapter(modeAdapter);
