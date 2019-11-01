@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CVoting</string>
+    <string name="app_dev_name">(DEV)CVoting</string>
+</resources>

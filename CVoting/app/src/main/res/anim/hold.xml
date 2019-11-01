@@ -1,0 +1,17 @@
+<!--
+ * 01.애니메이션 설명 : 0.5초간 hold 효과를 주는 animation
+ * 02.관련 클래스 : BMCFragmentActivity, SlideFragmentActivity
+ * 03.수정이력
+ * ***************************************************************************************************<br>
+ *  수정일                          이름                                  변경 내용<br>
+ * ***************************************************************************************************<br>
+ *  2016-10-06                      박재민                                최초 작성<br>
+ * ***************************************************************************************************<br>
+ *
+ * @author 박재민
+ * @version 1.0
+-->
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+	android:interpolator="@android:anim/accelerate_interpolator"
+	android:fromXDelta="0" android:toXDelta="0"
+	android:duration="@android:integer/config_longAnimTime" />

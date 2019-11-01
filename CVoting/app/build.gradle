@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.1"
+    useLibrary 'org.apache.http.legacy'
+    flavorDimensions "default"
+
+    defaultConfig {
+        applicationId "com.kkj.cvoting"
+        multiDexEnabled true
+
+        minSdkVersion 19
+        targetSdkVersion 29
+    }
+
+    productFlavors {
+        //개발버전 빌드 정보
+        dev {
+            versionCode 1
+            versionName "1.0.0"
+            applicationId "com.kkj.cvoting.dev"
+            manifestPlaceholders = [applicationLabel: "@string/app_dev_name"] //앱이름 정의
+        }
+
+        //운영버전 빌드 정보
+        product {
+            versionCode 1
+            versionName "1.0.0"
+            applicationId "com.kkj.cvoting"
+            manifestPlaceholders = [applicationLabel: "@string/app_name"]
+        }
+    }
+
+    //키스토어 설정 정보
+    signingConfigs {
+        release {
+            storeFile file("signature/cvoting.jks")  //keystore 파일 위치
+            storePassword "cvotingkkj"
+            keyAlias "kkj"
+            keyPassword "cvotingkkj"
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release // keystore 설정 정보 값.
+        }
+        debug {
+            debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    dexOptions {
+        preDexLibraries = false // pre dexing 여부 (미사용 시, 빌드 속도 향상)
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
+    aaptOptions {
+        cruncherEnabled = false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+}
