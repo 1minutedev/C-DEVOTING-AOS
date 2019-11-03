@@ -1,9 +1,14 @@
 package com.kkj.cvoting.application;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
+import android.webkit.WebView;
 
 import com.kkj.cvoting.util.ConfigVariable;
+
+import androidx.multidex.MultiDex;
 
 public class Init extends Application {
     private static final String TAG = Init.class.toString();
@@ -17,6 +22,8 @@ public class Init extends Application {
 
             ConfigVariable.CONTENTS_MODE = pref.getInt("mode", ConfigVariable.CONTENTS_MODE_ABSOLUTE);
             ConfigVariable.CONTENTS_PATH = pref.getString("path", "");
+
+            WebView.setWebContentsDebuggingEnabled(true);
         }
     }
 
@@ -34,4 +41,23 @@ public class Init extends Application {
         initSettingInfo();
     }
 
+    public String getStartPage() {
+        String url = "";
+
+        if (ConfigVariable.CONTENTS_MODE == ConfigVariable.CONTENTS_MODE_ASSETS) {
+            url = "file:///android_asset/" + ConfigVariable.CONTENTS_HTML;
+        } else if (ConfigVariable.CONTENTS_MODE == ConfigVariable.CONTENTS_MODE_EXTERNAL) {
+            url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + ConfigVariable.CONTENTS_PATH + ConfigVariable.CONTENTS_HTML;
+        } else if (ConfigVariable.CONTENTS_MODE == ConfigVariable.CONTENTS_MODE_ABSOLUTE) {
+            url = ConfigVariable.CONTENTS_PATH;
+        }
+
+        return url;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }

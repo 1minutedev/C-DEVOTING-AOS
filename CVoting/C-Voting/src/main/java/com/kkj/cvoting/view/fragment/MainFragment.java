@@ -4,18 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+
+import com.kkj.cvoting.R;
+import com.kkj.cvoting.application.Init;
+import com.kkj.cvoting.view.webview.KKJWebChromeClient;
+import com.kkj.cvoting.view.webview.KKJWebView;
+import com.kkj.cvoting.view.webview.KKJWebViewClient;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.kkj.cvoting.R;
-
-
-/**
- * Created by wonmin on 2019-03-20.
- */
 public class MainFragment extends Fragment {
-    public View wrapper;
+    private View wrapper;
+    private KKJWebView webView = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,5 +35,22 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         wrapper.setClickable(true);
+
+        initWebView();
+        loadWebView();
+    }
+
+    private void initWebView(){
+        webView = wrapper.findViewById(R.id.wv_main);
+        webView.setWebViewClient(new KKJWebViewClient());
+        webView.setWebChromeClient(new KKJWebChromeClient());
+
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+    }
+
+    private void loadWebView(){
+        String url = ((Init) getActivity().getApplication()).getStartPage();
+        webView.loadUrl(url);
     }
 }

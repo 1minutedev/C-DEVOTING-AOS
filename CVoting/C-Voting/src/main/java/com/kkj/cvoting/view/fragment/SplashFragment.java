@@ -4,21 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.kkj.cvoting.R;
 import com.kkj.cvoting.view.MainFragmentActivity;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-/**
- * Created by wonmin on 2019-03-20.
- */
 public class SplashFragment extends Fragment {
     private View wrapper;
-    private Button nextButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,19 +31,13 @@ public class SplashFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         wrapper.setClickable(true);
 
-        nextButton = (Button) wrapper.findViewById(R.id.btn_next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginFragment loginFragment = new LoginFragment();
+        LoginFragment loginFragment = new LoginFragment();
 
-                //데이터 넘길게 있다면,
-                Bundle bundle = new Bundle();
-                loginFragment.setArguments(bundle);
+        //데이터 넘길게 있다면,
+        Bundle bundle = new Bundle();
+        loginFragment.setArguments(bundle);
 
-                goToFragment(loginFragment);
-            }
-        });
+        goToFragment(loginFragment);
     }
 
     /**

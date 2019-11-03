@@ -3,8 +3,10 @@ package com.kkj.cvoting.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -88,10 +90,32 @@ public class MainFragmentActivity extends FragmentActivity {
      * 스택에 따라 현재 프래그먼트를 제거하면서,
      * 이전 프래그먼트를 보여주도록 처리
      */
+    private int term = 2000;
+    private int finishCnt = 0;
     @Override
     public void onBackPressed() {
-        if (getFragmentList().size() == 0) {
-            finish();
+        if (getFragmentList().size() <= 2) {
+            finishCnt++;
+
+            if(finishCnt > 1){
+                for(int i=getFragmentListSize()-1; i>=0; i-- ){
+                    Fragment fragment = getFragmentList().get(i);
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .remove(fragment)
+                            .commitAllowingStateLoss();
+                    removeFragment(fragment);
+                }
+                finish();
+            } else {
+                Toast.makeText(this, "한 번 더 이전 버튼을 누르면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finishCnt = 0;
+                    }
+                }, term);
+            }
             return;
         } else {
             if (getFragmentList().size() > 1) {

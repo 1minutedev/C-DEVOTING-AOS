@@ -10,5 +10,7 @@ public class ConfigVariable {
     public static final int CONTENTS_MODE_EXTERNAL = 1;
     public static final int CONTENTS_MODE_ABSOLUTE = 2;
 
+    public static final String CONTENTS_HTML = "contents/index.html";
+
     public static final int REQUEST_CODE_SETTINGVIEW = 40001;
 }

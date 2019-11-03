@@ -6,19 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.kkj.cvoting.R;
 import com.kkj.cvoting.view.MainFragmentActivity;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-/**
- * Created by wonmin on 2019-03-20.
- */
 public class LoginFragment extends Fragment {
     private View wrapper;
-    private Button nextButton;
+    private Button btnCvoting;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,8 +33,8 @@ public class LoginFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         wrapper.setClickable(true);
 
-        nextButton = (Button) wrapper.findViewById(R.id.btn_next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        btnCvoting = wrapper.findViewById(R.id.btn_cvoting);
+        btnCvoting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MainFragment mainFragment = new MainFragment();
