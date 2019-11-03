@@ -1,13 +1,18 @@
 package com.kkj.cvoting.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.kkj.cvoting.util.ConfigVariable;
 import com.kkj.cvoting.R;
+import com.kkj.cvoting.view.activity.SettingActivity;
 import com.kkj.cvoting.view.fragment.SplashFragment;
 
 import java.util.ArrayList;
@@ -17,6 +22,7 @@ public class MainFragmentActivity extends FragmentActivity {
      * 스택 관리를 위한 ArrayList
      */
     private static ArrayList<Fragment> fragmentList;
+    private boolean touched = false;
 
     /**
      * 현재 쌓인 프래그먼트 리스트
@@ -119,5 +125,30 @@ public class MainFragmentActivity extends FragmentActivity {
 
         //스택 관리를 위해 list에 추가
         addFragment(fragment);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        int touchCount = event.getPointerCount();
+
+        //환경 설정 접근하기 위한 히든 제스쳐 2 : 3점식 터치
+        if (touchCount == 3 && !touched) {
+            if (!ConfigVariable.isRelease) {
+                touched = true;
+                Intent intent = new Intent(this, SettingActivity.class);
+                startActivityForResult(intent, ConfigVariable.REQUEST_CODE_SETTINGVIEW);
+            }
+        }
+
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == ConfigVariable.REQUEST_CODE_SETTINGVIEW){
+            touched = false;
+        }
     }
 }
