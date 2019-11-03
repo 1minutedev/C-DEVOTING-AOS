@@ -8,16 +8,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
-import com.kkj.cvoting.util.ConfigVariable;
 import com.kkj.cvoting.R;
+import com.kkj.cvoting.util.ConfigVariable;
 import com.kkj.cvoting.view.activity.SettingActivity;
+import com.kkj.cvoting.view.fragment.MainFragment;
 import com.kkj.cvoting.view.fragment.SplashFragment;
 
 import java.util.ArrayList;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 public class MainFragmentActivity extends FragmentActivity {
     /**
@@ -92,13 +93,14 @@ public class MainFragmentActivity extends FragmentActivity {
      */
     private int term = 2000;
     private int finishCnt = 0;
+
     @Override
     public void onBackPressed() {
         if (getFragmentList().size() <= 2) {
             finishCnt++;
 
-            if(finishCnt > 1){
-                for(int i=getFragmentListSize()-1; i>=0; i-- ){
+            if (finishCnt > 1) {
+                for (int i = getFragmentListSize() - 1; i >= 0; i--) {
                     Fragment fragment = getFragmentList().get(i);
                     getSupportFragmentManager()
                             .beginTransaction()
@@ -171,8 +173,12 @@ public class MainFragmentActivity extends FragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == ConfigVariable.REQUEST_CODE_SETTINGVIEW){
+        if (requestCode == ConfigVariable.REQUEST_CODE_SETTINGVIEW) {
             touched = false;
+
+            if (getFragmentList().get(getFragmentListSize() - 1) instanceof MainFragment) {
+                ((MainFragment) getFragmentList().get(getFragmentListSize() - 1)).loadWebView();
+            }
         }
     }
 }

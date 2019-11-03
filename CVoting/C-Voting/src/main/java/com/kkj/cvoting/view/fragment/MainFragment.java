@@ -40,7 +40,7 @@ public class MainFragment extends Fragment {
         loadWebView();
     }
 
-    private void initWebView(){
+    private void initWebView() {
         webView = wrapper.findViewById(R.id.wv_main);
         webView.setWebViewClient(new KKJWebViewClient());
         webView.setWebChromeClient(new KKJWebChromeClient());
@@ -49,7 +49,7 @@ public class MainFragment extends Fragment {
         settings.setJavaScriptEnabled(true);
     }
 
-    private void loadWebView(){
+    public void loadWebView() {
         String url = ((Init) getActivity().getApplication()).getStartPage();
         webView.loadUrl(url);
     }
