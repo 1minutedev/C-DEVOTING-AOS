@@ -33,19 +33,19 @@ public class LoginFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         wrapper.setClickable(true);
 
-//        btnCvoting = wrapper.findViewById(R.id.btn_cvoting);
-//        btnCvoting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MainFragment mainFragment = new MainFragment();
-//
-//                //데이터 넘길게 있다면,
-//                Bundle bundle = new Bundle();
-//                mainFragment.setArguments(bundle);
-//
-//                goToFragment(mainFragment);
-//            }
-//        });
+        btnCvoting = wrapper.findViewById(R.id.btn_c_voting);
+        btnCvoting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainFragment mainFragment = new MainFragment();
+
+                //데이터 넘길게 있다면,
+                Bundle bundle = new Bundle();
+                mainFragment.setArguments(bundle);
+
+                goToFragment(mainFragment);
+            }
+        });
     }
 
     private void goToFragment(Fragment fragment) {
