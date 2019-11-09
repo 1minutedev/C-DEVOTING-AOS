@@ -101,11 +101,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
     private final Paint mCoveredFadePaint = new Paint();
 
     /**
-     * Drawable used to draw the shadow between panes.
-     */
-    private final Drawable mShadowDrawable;
-
-    /**
      * The size of the overhang in pixels.
      */
     private int mPanelHeight = -1;
@@ -275,7 +270,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         super(context, attrs, defStyle);
 
         if (isInEditMode()) {
-            mShadowDrawable = null;
             mDragHelper = null;
             return;
         }
@@ -328,16 +322,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
         }
         if (mParallaxOffset == -1) {
             mParallaxOffset = (int) (DEFAULT_PARALLAX_OFFSET * density);
-        }
-        // If the shadow height is zero, don't show the shadow
-        if (mShadowHeight > 0) {
-            if (mIsSlidingUp) {
-                mShadowDrawable = getResources().getDrawable(R.drawable.above_shadow);
-            } else {
-                mShadowDrawable = getResources().getDrawable(R.drawable.below_shadow);
-            }
-        } else {
-            mShadowDrawable = null;
         }
 
         setWillNotDraw(false);
@@ -1261,7 +1245,7 @@ public class SlidingUpPanelLayout extends ViewGroup {
         super.draw(c);
 
         // draw the shadow
-        if (mShadowDrawable != null && mSlideableView != null) {
+        if (mSlideableView != null) {
             final int right = mSlideableView.getRight();
             final int top;
             final int bottom;
@@ -1273,8 +1257,6 @@ public class SlidingUpPanelLayout extends ViewGroup {
                 bottom = mSlideableView.getBottom() + mShadowHeight;
             }
             final int left = mSlideableView.getLeft();
-            mShadowDrawable.setBounds(left, top, right, bottom);
-            mShadowDrawable.draw(c);
         }
     }
 

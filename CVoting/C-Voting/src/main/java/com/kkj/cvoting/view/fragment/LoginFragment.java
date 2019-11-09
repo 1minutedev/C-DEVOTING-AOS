@@ -37,7 +37,8 @@ public class LoginFragment extends Fragment {
         btnCvoting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainFragment mainFragment = new MainFragment();
+                DiscussionFragment mainFragment = new DiscussionFragment();
+//                MainFragment mainFragment = new MainFragment();
 
                 //데이터 넘길게 있다면,
                 Bundle bundle = new Bundle();
@@ -51,7 +52,7 @@ public class LoginFragment extends Fragment {
     private void goToFragment(Fragment fragment) {
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(getResources().getIdentifier("anim_slide_in_left", "anim", getActivity().getPackageName()), getResources().getIdentifier("hold", "anim", getActivity().getPackageName()))
+//                .setCustomAnimations(getResources().getIdentifier("anim_slide_in_left", "anim", getActivity().getPackageName()), getResources().getIdentifier("hold", "anim", getActivity().getPackageName()))
                 .add(getResources().getIdentifier("content_frame", "id", getActivity().getPackageName()), fragment, null)
                 .commitAllowingStateLoss();
         MainFragmentActivity.addFragment(fragment);
