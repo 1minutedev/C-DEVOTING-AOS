@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <drawable name="selector_pressed_true">#7028397f</drawable>
+    <drawable name="selector_pressed_true">#1C2D68</drawable>
     <drawable name="selector_pressed_false">#28397f</drawable>
 </resources>
