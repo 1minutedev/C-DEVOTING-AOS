@@ -25,6 +25,8 @@
 -dontpreverify
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
 
+-dontwarn com.google.**
+
 -keepattributes Exceptions,*Annotation*,InnerClasses,SourceFile,LineNumberTable,Deprecated,Signature,EnclosingMethod
 
 -verbose

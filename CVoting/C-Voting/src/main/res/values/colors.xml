@@ -6,4 +6,7 @@
 
     <drawable name="selector_pressed_true">#1C2D68</drawable>
     <drawable name="selector_pressed_false">#28397f</drawable>
+
+    <color name="discussion_bottom_text_default">#373737</color>
+    <color name="discussion_bottom_text_selected">#fff</color>
 </resources>

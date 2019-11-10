@@ -1,6 +1,7 @@
 package com.kkj.cvoting.view.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import com.kkj.cvoting.R;
 import com.kkj.cvoting.util.SlidingUpPanelLayout;
 import com.kkj.cvoting.view.MainFragmentActivity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,7 +23,7 @@ public class DiscussionFragment extends Fragment {
 
     private SlidingUpPanelLayout mLayout;
 
-    FragmentPagerAdapter adapterViewPager;
+    private FragmentPagerAdapter adapterViewPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class DiscussionFragment extends Fragment {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
             }
+
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
             }
@@ -57,45 +60,36 @@ public class DiscussionFragment extends Fragment {
         });
 
         ViewPager vpPager = (ViewPager) wrapper.findViewById(R.id.vp_pager);
-        adapterViewPager = new CustomPagerAdapter(getActivity().getSupportFragmentManager());
+        adapterViewPager = new CustomPagerAdapter(getChildFragmentManager());
         vpPager.setAdapter(adapterViewPager);
 
         CircleIndicator indicator = (CircleIndicator) wrapper.findViewById(R.id.indicator);
         indicator.setViewPager(vpPager);
     }
 
-    public static class CustomPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 2;
+    public class CustomPagerAdapter extends FragmentPagerAdapter {
+        private int NUM_ITEMS = 2;
 
         public CustomPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
-        // Returns total number of pages
         @Override
         public int getCount() {
             return NUM_ITEMS;
         }
 
-        // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DiscussionBottomFirstFragment.newInstance(0, "Page # 1");
+                    return DiscussionBottomFirstFragment.newInstance(0);
                 case 1:
-                    return DiscussionBottomSecondFragment.newInstance(1, "Page # 2");
+                    return DiscussionBottomSecondFragment.newInstance(1);
                 default:
                     return null;
             }
         }
-
-        // Returns the page title for the top indicator
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return "Page " + position;
-        }
-
     }
 
     private void goToFragment(Fragment fragment) {

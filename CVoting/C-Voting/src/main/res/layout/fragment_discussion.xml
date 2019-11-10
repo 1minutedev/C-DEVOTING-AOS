@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:id="@+id/rl_discussion"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    android:orientation="vertical">
+    app:ignore="NamespaceTypo"
+    xmlns:app1="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -143,7 +145,7 @@
                 android:gravity="bottom"
                 sothree:umanoDragView="@+id/dragView"
                 sothree:umanoOverlay="true"
-                sothree:umanoPanelHeight="68dp"
+                sothree:umanoPanelHeight="230dp"
                 sothree:umanoParallaxOffset="100dp"
                 sothree:umanoShadowHeight="4dp">
 
@@ -168,14 +170,14 @@
                             android:id="@+id/tv_contents"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:text="후문에 가로등이 설치되었음에도 불구하고 계단을 오르 내릴 때 위험이 많습니다. 특히 눈이나 비가 올 때는 후문을 이용하지 말아야 할지 고민을 하기도 합니다. 내려가다 미끄러지면 다칠 위험이 있어 항상 조심히 내려가지만 좀 더 안전하게 등하교 할 수 있는 길을 만들어주셨으면 합니다.후문에 가로등이 설치되었음에도 불구하고 계단을 오르 내릴 때 위험이 많습니다. 특히 눈이나 비가 올 때는 후문을 이용하지 말아야 할지 고민을 하기도 합니다. 내려가다 미끄러지면 다칠 위험이 있어 항상 조심히 내려가지만 좀 더 안전하게 등하교 할 수 있는 길을 만들어주셨으면 합니다.후문에 가로등이 설치되었음에도 불구하고 계단을 오르 내릴 때 위험이 많습니다. 특히 눈이나 비가 올 때는 후문을 이용하지 말아야 할지 고민을 하기도 합니다. 내려가다 미끄러지면 다칠 위험이 있어 항상 조심히 내려가지만 좀 더 안전하게 등하교 할 수 있는 길을 만들어주셨으면 합니다.후문에 가로등이 설치되었음에도 불구하고 계단을 오르 내릴 때 위험이 많습니다. 특히 눈이나 비가 올 때는 후문을 이용하지 말아야 할지 고민을 하기도 합니다. 내려가다 미끄러지면 다칠 위험이 있어 항상 조심히 내려가지만 좀 더 안전하게 등하교 할 수 있는 길을 만들어주셨으면 합니다.후문에 가로등이 설치되었음에도 불구하고 계단을 오르 내릴 때 위험이 많습니다. 특히 눈이나 비가 올 때는 후문을 이용하지 말아야 할지 고민을 하기도 합니다. 내려가다 미끄러지면 다칠 위험이 있어 항상 조심히 내려가지만 좀 더 안전하게 등하교 할 수 있는 길을 만들어주셨으면 합니다." />
+                            android:text="후문에 가로등이 설치되었음에도 불구하고 계단을 오르 내릴 때 위험이 많습니다. 특히 눈이나 비가 올 때는 후문을 이용하지 말아야 할지 고민을 하기도 합니다. 내려가다 미끄러지면 다칠 위험이 있어 항상 조심히 내려가지만 좀 더 안전하게 등하교 할 수 있는 길을 만들어주셨으면 합니다." />
                     </LinearLayout>
                 </ScrollView>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/dragView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -184,24 +186,93 @@
                     android:focusable="false"
                     android:orientation="vertical">
 
-                    <me.relex.circleindicator.CircleIndicator
-                        android:id="@+id/indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerInParent="true"
-                        android:layout_marginBottom="10dp"
-                        app:ci_drawable="@drawable/black_radius"
-                        app:ci_height="7dp"
-                        app:ci_margin="4dp"
-                        app:ci_width="7dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#097c25" >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="찬"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="33.3%"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#da0505" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="기타"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="33.3%"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#b7b7b7" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="찬"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="33.3%"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/vp_pager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
-                </RelativeLayout>
+                </LinearLayout>
             </com.kkj.cvoting.util.SlidingUpPanelLayout>
         </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="25dp"
+        app1:ci_drawable="@drawable/gray_radius"
+        app1:ci_height="4dp"
+        app1:ci_margin="5dp"
+        app1:ci_width="4dp" />
+</RelativeLayout>

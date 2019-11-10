@@ -55,7 +55,6 @@ public class MainFragmentActivity extends FragmentActivity {
      */
     public static void addFragment(Fragment fragment) {
         getFragmentList().add(fragment);
-        Log.e("MainFragmentActivity", "addFragment current Stack == " + getFragmentListSize());
     }
 
     /**
@@ -65,7 +64,6 @@ public class MainFragmentActivity extends FragmentActivity {
      */
     public static void removeFragment(Fragment fragment) {
         getFragmentList().remove(fragment);
-        Log.e("MainFragmentActivity", "removeFragment current Stack == " + getFragmentListSize());
     }
 
     @Override
@@ -78,7 +76,6 @@ public class MainFragmentActivity extends FragmentActivity {
          */
         SplashFragment splashFragment = new SplashFragment();
 
-        // 데이터 넘길게 있다면 Bundle로 넘김
         Bundle bundle = new Bundle();
         splashFragment.setArguments(bundle);
 
@@ -149,7 +146,6 @@ public class MainFragmentActivity extends FragmentActivity {
                 .add(getResources().getIdentifier("content_frame", "id", getPackageName()), fragment, null)
                 .commit();
 
-        //스택 관리를 위해 list에 추가
         addFragment(fragment);
     }
 
