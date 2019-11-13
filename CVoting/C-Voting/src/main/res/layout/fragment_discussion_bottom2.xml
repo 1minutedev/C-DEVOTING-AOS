@@ -5,12 +5,13 @@
     android:background="#fff"
     android:orientation="vertical">
 
-    <ScrollView
-        android:id="@+id/sv_reply_list"
+    <ListView
+        android:id="@+id/lv_reply_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    </ScrollView>
+        android:layout_weight="1"
+        android:divider="@null"></ListView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -48,6 +49,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <EditText
+                android:id="@+id/et_contents"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="#000"
@@ -61,9 +63,10 @@
             android:layout_height="44dp"
             android:gravity="center">
             <ImageView
+                android:id="@+id/iv_enter"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/chan_piyong"
+                android:src="@drawable/btn_enter"
                 android:layout_gravity="center"/>
         </LinearLayout>
     </LinearLayout>

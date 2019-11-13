@@ -52,7 +52,7 @@ public class LoginFragment extends Fragment {
     private void goToFragment(Fragment fragment) {
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .setCustomAnimations(getResources().getIdentifier("anim_slide_in_left", "anim", getActivity().getPackageName()), getResources().getIdentifier("hold", "anim", getActivity().getPackageName()))
+                .setCustomAnimations(getResources().getIdentifier("anim_slide_in_left", "anim", getActivity().getPackageName()), getResources().getIdentifier("hold", "anim", getActivity().getPackageName()))
                 .add(getResources().getIdentifier("content_frame", "id", getActivity().getPackageName()), fragment, null)
                 .commitAllowingStateLoss();
         MainFragmentActivity.addFragment(fragment);

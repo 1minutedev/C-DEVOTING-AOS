@@ -8,10 +8,12 @@
 
     <LinearLayout
         android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_height="180dp"
         android:background="@drawable/rec_gita"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -29,6 +31,7 @@
                     android:src="@drawable/profile"
                     android:layout_marginTop="5dp"/>
                 <TextView
+                    android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="김민지(학부 재학생)"
@@ -43,6 +46,7 @@
             android:layout_weight="3"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/tv_contents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -52,12 +56,14 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/iv_reply"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/gita_reply"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"/>
             <TextView
+                android:id="@+id/tv_reply_cnt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="23"
@@ -65,6 +71,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"/>
             <ImageView
+                android:id="@+id/iv_piyong"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/gita_piyong"
