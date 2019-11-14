@@ -8,6 +8,7 @@ import android.webkit.WebSettings;
 
 import com.kkj.cvoting.R;
 import com.kkj.cvoting.application.Init;
+import com.kkj.cvoting.util.bridge.KKJBridge;
 import com.kkj.cvoting.view.webview.KKJWebChromeClient;
 import com.kkj.cvoting.view.webview.KKJWebView;
 import com.kkj.cvoting.view.webview.KKJWebViewClient;
@@ -62,6 +63,8 @@ public class MainFragment extends Fragment {
         settings.setSupportZoom(true);
         settings.setTextZoom(100);
         settings.setDisplayZoomControls(false);
+
+        webView.addJavascriptInterface(new KKJBridge(getActivity(), webView), "KKJBridge");
     }
 
     public void loadWebView() {

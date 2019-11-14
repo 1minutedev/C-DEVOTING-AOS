@@ -40,40 +40,50 @@ public class ReplyListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ReplyViewHolder holder;
+
         final int pos = position;
         final Context context = parent.getContext();
 
         ReplyItem replyItem = replyList.get(pos);
         String type = replyItem.getType();
 
-        if (convertView == null) {
+//        if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            holder = new ReplyViewHolder();
 
             if (type.equals("chan")) {
                 convertView = inflater.inflate(R.layout.fragment_discussion_bottom2_item1, parent, false);
-                goodCnt = (TextView) convertView.findViewById(R.id.tv_good_cnt);
-                goodCnt.setText(String.valueOf(replyItem.getGoodCnt()));
+                holder.tvGoodCnt = (TextView) convertView.findViewById(R.id.tv_good_cnt);
             } else if (type.equals("ban")) {
                 convertView = inflater.inflate(R.layout.fragment_discussion_bottom2_item2, parent, false);
-                goodCnt = (TextView) convertView.findViewById(R.id.tv_good_cnt);
-                goodCnt.setText(String.valueOf(replyItem.getGoodCnt()));
+                holder.tvGoodCnt = (TextView) convertView.findViewById(R.id.tv_good_cnt);
             } else {
                 convertView = inflater.inflate(R.layout.fragment_discussion_bottom2_item3, parent, false);
             }
 
-            userName = (TextView) convertView.findViewById(R.id.tv_user_name);
-            userName.setText(replyItem.getUser());
-            contents = (TextView) convertView.findViewById(R.id.tv_contents);
-            contents.setText(replyItem.getContents());
-            replyCnt = (TextView) convertView.findViewById(R.id.tv_reply_cnt);
-            replyCnt.setText(String.valueOf(replyItem.getReplyCnt()));
-            convertView.setTag(pos);
+            holder.tvUser = (TextView) convertView.findViewById(R.id.tv_user_name);
+            holder.tvContents = (TextView) convertView.findViewById(R.id.tv_contents);
+            holder.tvReplyCnt = (TextView) convertView.findViewById(R.id.tv_reply_cnt);
+
+            convertView.setTag(holder);
+//        } else {
+//            holder = (ReplyViewHolder) convertView.getTag();
+//        }
+
+        if (holder.tvGoodCnt != null) {
+            holder.tvGoodCnt.setText(String.valueOf(replyItem.getGoodCnt()));
         }
+
+        holder.tvReplyCnt.setText(String.valueOf(replyItem.getReplyCnt()));
+        holder.tvUser.setText(replyItem.getUser());
+        holder.tvContents.setText(replyItem.getContents());
 
         return convertView;
     }
 
-    public void addItem(int num, String type, String user, String contents, int goodCnt, int replyCnt){
+    public void addItem(int num, String type, String user, String contents, int goodCnt, int replyCnt) {
         ReplyItem item = new ReplyItem();
 
         item.setNum(num);

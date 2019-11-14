@@ -7,17 +7,17 @@
     android:gravity="center">
 
     <LinearLayout
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="180dp"
         android:background="@drawable/rec_gita"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_margin="10dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -28,16 +28,14 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/profile"
-                    android:layout_marginTop="5dp"/>
+                    android:src="@drawable/profile"/>
                 <TextView
                     android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="김민지(학부 재학생)"
                     android:textColor="#000"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"/>
+                    android:layout_gravity="center"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -48,17 +46,19 @@
             <TextView
                 android:id="@+id/tv_contents"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
             <ImageView
                 android:id="@+id/iv_reply"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/gita_reply"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"/>
@@ -72,8 +72,8 @@
                 android:layout_marginLeft="5dp"/>
             <ImageView
                 android:id="@+id/iv_piyong"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/gita_piyong"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"/>

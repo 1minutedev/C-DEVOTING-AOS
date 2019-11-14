@@ -37,8 +37,8 @@ public class LoginFragment extends Fragment {
         btnCvoting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DiscussionFragment mainFragment = new DiscussionFragment();
-//                MainFragment mainFragment = new MainFragment();
+//                DiscussionFragment mainFragment = new DiscussionFragment();
+                MainFragment mainFragment = new MainFragment();
 
                 //데이터 넘길게 있다면,
                 Bundle bundle = new Bundle();

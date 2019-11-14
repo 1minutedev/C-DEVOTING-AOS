@@ -7,17 +7,17 @@
 
     <LinearLayout
         android:id="@+id/ll_chan_reply"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="180dp"
         android:background="@drawable/rec_chan"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_margin="10dp" >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="0dp"
@@ -50,8 +50,8 @@
                 android:gravity="right">
                 <ImageView
                     android:id="@+id/iv_good"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:src="@drawable/chan_good"
                     android:layout_gravity="center"
                     android:layout_marginRight="5dp"/>
@@ -73,17 +73,19 @@
             <TextView
                 android:id="@+id/tv_contents"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="5dp">
             <ImageView
                 android:id="@+id/iv_reply"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/chan_reply"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"/>
@@ -97,8 +99,8 @@
                 android:layout_marginLeft="5dp"/>
             <ImageView
                 android:id="@+id/iv_piyong"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:src="@drawable/chan_piyong"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"/>
