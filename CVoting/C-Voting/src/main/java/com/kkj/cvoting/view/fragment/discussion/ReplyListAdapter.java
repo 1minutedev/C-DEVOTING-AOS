@@ -43,7 +43,7 @@ public class ReplyListAdapter extends BaseAdapter {
         final int pos = position;
         final Context context = parent.getContext();
 
-        ReplyItem replyItem = replyList.get(position);
+        ReplyItem replyItem = replyList.get(pos);
         String type = replyItem.getType();
 
         if (convertView == null) {
@@ -67,6 +67,7 @@ public class ReplyListAdapter extends BaseAdapter {
             contents.setText(replyItem.getContents());
             replyCnt = (TextView) convertView.findViewById(R.id.tv_reply_cnt);
             replyCnt.setText(String.valueOf(replyItem.getReplyCnt()));
+            convertView.setTag(pos);
         }
 
         return convertView;

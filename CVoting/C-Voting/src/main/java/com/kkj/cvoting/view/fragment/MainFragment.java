@@ -47,6 +47,21 @@ public class MainFragment extends Fragment {
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        settings.setGeolocationEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setUseWideViewPort(true);
+        settings.setAppCacheEnabled(false);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+
+        settings.setLoadWithOverviewMode(true);
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setSupportZoom(true);
+        settings.setTextZoom(100);
+        settings.setDisplayZoomControls(false);
     }
 
     public void loadWebView() {

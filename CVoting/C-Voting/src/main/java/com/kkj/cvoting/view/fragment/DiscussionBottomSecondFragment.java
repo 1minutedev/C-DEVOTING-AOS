@@ -141,15 +141,15 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     }
 
     private void addReplyList(){
-        String contents = etContents.getText().toString();
+        final String contents = etContents.getText().toString();
 
         if(TextUtils.isEmpty(contents)){
             Toast.makeText(getActivity(), "입력한 내용이 없습니다.", Toast.LENGTH_SHORT).show();
         }else {
-            adapter.addItem(adapter.getCount() + 1, type, "김민지(학부 재학생)", contents, 0, 0);
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    adapter.addItem(adapter.getCount() + 1, type, "김민지(학부 재학생)", contents, 0, 0);
                     adapter.notifyDataSetChanged();
 
                     etContents.setText("");

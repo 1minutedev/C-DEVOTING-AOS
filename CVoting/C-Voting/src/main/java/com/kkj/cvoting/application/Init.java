@@ -47,7 +47,7 @@ public class Init extends Application {
         if (ConfigVariable.CONTENTS_MODE == ConfigVariable.CONTENTS_MODE_ASSETS) {
             url = "file:///android_asset/" + ConfigVariable.CONTENTS_HTML;
         } else if (ConfigVariable.CONTENTS_MODE == ConfigVariable.CONTENTS_MODE_EXTERNAL) {
-            url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + ConfigVariable.CONTENTS_PATH + ConfigVariable.CONTENTS_HTML;
+            url = "file:///" + Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + ConfigVariable.CONTENTS_PATH + ConfigVariable.CONTENTS_HTML;
         } else if (ConfigVariable.CONTENTS_MODE == ConfigVariable.CONTENTS_MODE_ABSOLUTE) {
             url = ConfigVariable.CONTENTS_PATH;
         }
