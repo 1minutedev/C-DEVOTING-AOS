@@ -62,7 +62,7 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -91,16 +91,10 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_name"
+                        android:id="@+id/tv_writer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="김민지" />
-
-                    <TextView
-                        android:id="@+id/tv_affiliation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="(학부 재학생)" />
+                        android:text="김민지(학부 재학생)" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -109,7 +103,7 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_date"
+                        android:id="@+id/tv_regdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="10/10 21:08" />
@@ -123,12 +117,19 @@
                 android:gravity="right">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="D-"
+                    android:textColor="#000"
+                    android:textSize="15sp" />
+                <TextView
                     android:id="@+id/tv_dday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginRight="5dp"
-                    android:text="D-11"
+                    android:text="11"
                     android:textColor="#000"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -163,8 +164,7 @@
                             android:id="@+id/iv_image"
                             android:layout_width="wrap_content"
                             android:layout_height="300dp"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/test" />
+                            android:adjustViewBounds="true" />
 
                         <TextView
                             android:id="@+id/tv_contents"
@@ -192,6 +192,7 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/ll_chan_per"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -204,6 +205,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"/>
                             <TextView
+                                android:id="@+id/tv_chan_per"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="33.3%"
@@ -212,10 +214,34 @@
                                 android:layout_marginLeft="5dp"/>
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/ll_ban_per"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="#da0505" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="반"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                            <TextView
+                                android:id="@+id/tv_ban_per"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="33.3%"
+                                android:textColor="#fff"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_gita_per"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#b7b7b7" >
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -225,27 +251,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"/>
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="33.3%"
-                                android:textColor="#fff"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"/>
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="#b7b7b7" >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="찬"
-                                android:textColor="#fff"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"/>
-                            <TextView
+                                android:id="@+id/tv_gita_per"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="33.3%"

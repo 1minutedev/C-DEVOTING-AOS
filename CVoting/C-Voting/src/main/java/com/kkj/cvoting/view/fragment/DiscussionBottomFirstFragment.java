@@ -11,23 +11,26 @@ import android.widget.TextView;
 
 import com.kkj.cvoting.R;
 
+import org.json.JSONObject;
+
 
 public class DiscussionBottomFirstFragment extends Fragment implements View.OnClickListener {
     private View wrapper;
-    private int page;
 
-    public static DiscussionBottomFirstFragment newInstance(int page) {
+    public static DiscussionBottomFirstFragment newInstance(int page, String pageData) {
         DiscussionBottomFirstFragment fragment = new DiscussionBottomFirstFragment();
+
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
+        args.putInt("page", page);
+        args.putString("pageData", pageData);
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
     }
 
     @Override

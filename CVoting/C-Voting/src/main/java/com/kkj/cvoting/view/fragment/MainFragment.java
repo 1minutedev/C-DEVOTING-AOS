@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 public class MainFragment extends Fragment {
     private View wrapper;
-    private KKJWebView webView = null;
+    public KKJWebView webView = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

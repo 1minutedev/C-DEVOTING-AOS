@@ -3,6 +3,7 @@ package com.kkj.cvoting.view.fragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +42,14 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
 
     private String type = "gita";
 
-    public static DiscussionBottomSecondFragment newInstance(int page) {
+    public static DiscussionBottomSecondFragment newInstance(int page, String pageData) {
         DiscussionBottomSecondFragment fragment = new DiscussionBottomSecondFragment();
+
         Bundle args = new Bundle();
-        args.putInt("someInt", page);
+        args.putInt("page", page);
+        args.putString("pageData", pageData);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -85,6 +89,13 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
         ban = wrapper.findViewById(R.id.tv_ban);
         enter = wrapper.findViewById(R.id.iv_enter);
         etContents = wrapper.findViewById(R.id.et_contents);
+        //엔터 시 검색? 줄바꿈?
+//        etContents.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+//                return false;
+//            }
+//        });
 
         chan.setOnClickListener(this);
         ban.setOnClickListener(this);

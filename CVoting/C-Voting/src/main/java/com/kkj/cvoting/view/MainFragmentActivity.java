@@ -118,16 +118,28 @@ public class MainFragmentActivity extends FragmentActivity {
             return;
         } else {
             if (getFragmentList().size() > 1) {
-                final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
-                final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
+                boolean closeFragment = true;
 
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .setCustomAnimations(getResources().getIdentifier("hold", "anim", getPackageName()), getResources().getIdentifier("anim_slide_out_right", "anim", getPackageName()))
-                        .remove(currentFragment)
-                        .show(showFragment)
-                        .commitAllowingStateLoss();
-                removeFragment(currentFragment);
+                final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
+
+                if(currentFragment instanceof MainFragment){
+                    if(((MainFragment)currentFragment).webView.canGoBack()){
+                        closeFragment = false;
+                        ((MainFragment)currentFragment).webView.goBack();
+                    }
+                }
+
+                if(closeFragment) {
+                    final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .setCustomAnimations(getResources().getIdentifier("hold", "anim", getPackageName()), getResources().getIdentifier("anim_slide_out_right", "anim", getPackageName()))
+                            .remove(currentFragment)
+                            .show(showFragment)
+                            .commitAllowingStateLoss();
+                    removeFragment(currentFragment);
+                }
             } else {
                 finish();
                 removeFragment(getFragmentList().get(getFragmentListSize() - 1));

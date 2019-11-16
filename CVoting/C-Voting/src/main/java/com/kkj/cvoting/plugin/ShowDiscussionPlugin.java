@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.kkj.cvoting.plugin.util.BasePlugin;
 import com.kkj.cvoting.view.MainFragmentActivity;
 import com.kkj.cvoting.view.fragment.DiscussionFragment;
-import com.kkj.cvoting.view.fragment.MainFragment;
 
 import org.json.JSONObject;
 
@@ -35,25 +34,14 @@ public class ShowDiscussionPlugin extends BasePlugin {
                 pageData = param.getJSONObject("page_data");
             }
 
-            DiscussionFragment mainFragment = new DiscussionFragment();
+            DiscussionFragment discussionFragment = new DiscussionFragment();
 
             Bundle bundle = new Bundle();
-            Iterator<String> keys = pageData.keys();
+            bundle.putString("page_data", pageData.toString());
 
-            while(keys.hasNext()){
-                String key = keys.next();
+            discussionFragment.setArguments(bundle);
 
-                if(pageData.get(key) instanceof Integer){
-                    bundle.putInt(key, pageData.getInt(key));
-                }else if(pageData.get(key) instanceof String){
-                    bundle.putString(key, pageData.getString(key));
-                }else if(pageData.get(key) instanceof Boolean){
-                    bundle.putBoolean(key, pageData.getBoolean(key));
-                }
-            }
-            mainFragment.setArguments(bundle);
-
-            goToFragment(mainFragment);
+            goToFragment(discussionFragment);
 
             resultData.put("result", true);
             listener.sendCallback(callback, param);
@@ -65,7 +53,6 @@ public class ShowDiscussionPlugin extends BasePlugin {
     private void goToFragment(Fragment fragment) {
         ((FragmentActivity)getActivity()).getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(getActivity().getResources().getIdentifier("anim_slide_in_left", "anim", getActivity().getPackageName()), getActivity().getResources().getIdentifier("hold", "anim", getActivity().getPackageName()))
                 .add(getActivity().getResources().getIdentifier("content_frame", "id", getActivity().getPackageName()), fragment, null)
                 .commitAllowingStateLoss();
         MainFragmentActivity.addFragment(fragment);

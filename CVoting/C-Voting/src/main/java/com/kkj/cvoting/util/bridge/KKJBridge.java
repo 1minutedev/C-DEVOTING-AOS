@@ -3,6 +3,7 @@ package com.kkj.cvoting.util.bridge;
 import android.app.Activity;
 import android.webkit.JavascriptInterface;
 
+import com.kkj.cvoting.plugin.SharedStoragePlugin;
 import com.kkj.cvoting.plugin.ShowDiscussionPlugin;
 import com.kkj.cvoting.plugin.TestPlugin;
 import com.kkj.cvoting.plugin.util.BasePlugin;
@@ -54,16 +55,20 @@ public class KKJBridge {
             switch (id) {
                 case CallID.TEST:
                     plugin = new TestPlugin();
-                    plugin.setPlugin(activity, completeListener);
                     break;
                 case CallID.SHOW_DISCUSSION:
                     plugin = new ShowDiscussionPlugin();
-                    plugin.setPlugin(activity, completeListener);
+                    break;
+                case CallID.SET_SHARED_STORAGE:
+                case CallID.GET_SHARED_STORAGE:
+                    plugin = new SharedStoragePlugin();
                     break;
                 default:
                     canExecute = false;
                     break;
             }
+
+            plugin.setPlugin(activity, completeListener);
 
             if (canExecute) {
                 plugin.execute(data);
