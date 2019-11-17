@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.kkj.cvoting.R;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -42,6 +43,9 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
 
     private String type = "gita";
 
+    private JSONObject pageData;
+    private JSONArray cmtList;
+
     public static DiscussionBottomSecondFragment newInstance(int page, String pageData) {
         DiscussionBottomSecondFragment fragment = new DiscussionBottomSecondFragment();
 
@@ -56,7 +60,6 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
     }
 
     @Override
@@ -71,15 +74,32 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
 
         init();
 
-        String replyDataPath = getActivity().getFilesDir().getPath() + "/json/reply.json";
-        File replyFile = new File(replyDataPath);
-        if(replyFile.exists()){
-            // 데이터를 가져와 뿌려준다.
-            setReplyData(replyFile);
+        Bundle data = getArguments();
+        try {
+            pageData = new JSONObject(data.getString("pageData"));
+            cmtList = pageData.getJSONArray("cmtList");
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        for (int i = 0; i < cmtList.length(); i++) {
+                            JSONObject cmt = cmtList.getJSONObject(i);
+                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), 0, cmt.getJSONArray("replyCmtList").length());
+                            adapter.notifyDataSetChanged();
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void init(){
+    private void init() {
         adapter = new ReplyListAdapter();
 
         replyListView = wrapper.findViewById(R.id.lv_reply_list);
@@ -102,23 +122,23 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
         enter.setOnClickListener(this);
     }
 
-    private void setReplyData(File file){
+    private void setReplyData(File file) {
         try {
             FileInputStream fis = new FileInputStream(file);
             String jsonStr = inputStreamToString(fis);
             JSONObject replyData = new JSONObject(jsonStr);
             Log.e("wonmin", "replyData : " + replyData);
             fis.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tv_chan:
-                if(type.equals("chan")){
+                if (type.equals("chan")) {
                     type = "gita";
                     chan.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
                     chan.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
@@ -131,7 +151,7 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
                 }
                 break;
             case R.id.tv_ban:
-                if(type.equals("ban")){
+                if (type.equals("ban")) {
                     type = "gita";
                     ban.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
                     ban.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
@@ -151,12 +171,12 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
         }
     }
 
-    private void addReplyList(){
+    private void addReplyList() {
         final String contents = etContents.getText().toString();
 
-        if(TextUtils.isEmpty(contents)){
+        if (TextUtils.isEmpty(contents)) {
             Toast.makeText(getActivity(), "입력한 내용이 없습니다.", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

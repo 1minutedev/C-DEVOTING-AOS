@@ -1,5 +1,7 @@
 package com.kkj.cvoting.view.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +18,7 @@ import com.kkj.cvoting.R;
 import com.kkj.cvoting.util.SlidingUpPanelLayout;
 import com.kkj.cvoting.view.MainFragmentActivity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -61,9 +64,9 @@ public class DiscussionFragment extends Fragment {
     private String endDate = "";
     private String dDay = "";
 
-    private int chanPer;
-    private int banPer;
-    private int gitaPer;
+    private int chanCnt;
+    private int banCnt;
+    private int gitaCnt;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,42 +92,59 @@ public class DiscussionFragment extends Fragment {
     private void getData() {
         try {
             Bundle data = getArguments();
+            JSONObject pageData = new JSONObject(data.getString("page_data"));
+            JSONObject discussionPageData = null;
 
-            JSONObject discussionPageData = new JSONObject(data.getString("page_data"));
+            SharedPreferences pref = getActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
+            JSONObject allData = new JSONObject(pref.getString("baseData", ""));
 
-            if(discussionPageData.has("subject")){
+            JSONArray reviewList = allData.getJSONArray("ReviewList");
+
+            int idx = pageData.getInt("idx");
+
+            for (int i = 0; i < reviewList.length(); i++) {
+                JSONObject reviewData = reviewList.getJSONObject(i);
+                if(reviewData.getInt("idx") == idx){
+                    discussionPageData = reviewData;
+                }
+            }
+
+            if (discussionPageData.has("subject")) {
                 subject = discussionPageData.getString("subject");
             }
-            if(discussionPageData.has("writer")){
+            if (discussionPageData.has("writer")) {
                 writer = discussionPageData.getString("writer");
             }
-            if(discussionPageData.has("regDate")){
+            if (discussionPageData.has("regDate")) {
                 regDate = discussionPageData.getString("regDate");
             }
-            if(discussionPageData.has("startDate")){
+            if (discussionPageData.has("startDate")) {
                 startDate = discussionPageData.getString("startDate");
             }
-            if(discussionPageData.has("endDate")){
+            if (discussionPageData.has("endDate")) {
                 endDate = discussionPageData.getString("endDate");
             }
-            if(discussionPageData.has("img")){
+            if (discussionPageData.has("img")) {
                 imagePath = discussionPageData.getString("img");
             }
-            if(discussionPageData.has("content")){
+            if (discussionPageData.has("content")) {
                 contents = discussionPageData.getString("content");
             }
-            if(discussionPageData.has("agreePercent")){
-                chanPer = discussionPageData.getInt("agreePercent");
+            if (discussionPageData.has("agreeCnt")) {
+                chanCnt = discussionPageData.getInt("agreeCnt");
             }
-            if(discussionPageData.has("oppPercent")){
-                banPer = discussionPageData.getInt("oppPercent");
+            if (discussionPageData.has("oppCnt")) {
+                banCnt = discussionPageData.getInt("oppCnt");
             }
-            if(discussionPageData.has("neutPercent")) {
-                gitaPer = discussionPageData.getInt("neutPercent");
+            if (discussionPageData.has("neutCnt")) {
+                gitaCnt = discussionPageData.getInt("neutCnt");
             }
 
             bottomFirstPageData = new JSONObject();
             bottomSecondPageData = new JSONObject();
+            if (discussionPageData.has("cmtList")) {
+                bottomSecondPageData.put("cmtList", discussionPageData.getJSONArray("cmtList"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,7 +202,7 @@ public class DiscussionFragment extends Fragment {
         try {
             Date curDate = curFormat.parse(regDate);
             tvRegDate.setText(newFormat.format(curDate));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -198,15 +218,15 @@ public class DiscussionFragment extends Fragment {
 
             dDay = dDayFormat.format(endDate.getTime() - curDate.getTime() - (60 * 60 * 24 * 1000));
             tvDday.setText(dDay);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         //이미지 패스를 전달 받아야할 듯 함. 상의해야 할 것으로 보임.
         try {
-            InputStream is = getActivity().getAssets().open("contents/assets/common/images/posts/img_review_00.jpg");
+            InputStream is = getActivity().getAssets().open("contents/assets/common/images/posts/" + imagePath);
             ivImage.setImageBitmap(BitmapFactory.decodeStream(is));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -239,8 +259,7 @@ public class DiscussionFragment extends Fragment {
         }
     }
 
-    private String getDday(){
-
+    private String getDday() {
         return "";
     }
 }

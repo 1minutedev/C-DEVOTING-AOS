@@ -2,9 +2,11 @@ package com.kkj.cvoting.view.fragment.discussion;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.kkj.cvoting.R;
@@ -67,6 +69,13 @@ public class ReplyListAdapter extends BaseAdapter {
             holder.tvContents = (TextView) convertView.findViewById(R.id.tv_contents);
             holder.tvReplyCnt = (TextView) convertView.findViewById(R.id.tv_reply_cnt);
 
+            ScrollView scrollView = convertView.findViewById(R.id.sv_contents);
+            scrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    return true;
+                }
+            });
             convertView.setTag(holder);
 //        } else {
 //            holder = (ReplyViewHolder) convertView.getTag();
