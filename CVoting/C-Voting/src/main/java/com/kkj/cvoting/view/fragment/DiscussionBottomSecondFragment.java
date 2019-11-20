@@ -26,6 +26,7 @@ import java.io.InputStream;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.kkj.cvoting.util.SlidingUpPanelLayout;
 import com.kkj.cvoting.view.fragment.discussion.ReplyListAdapter;
 
 public class DiscussionBottomSecondFragment extends Fragment implements View.OnClickListener {
@@ -46,8 +47,11 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     private JSONObject pageData;
     private JSONArray cmtList;
 
-    public static DiscussionBottomSecondFragment newInstance(int page, String pageData) {
+    private static SlidingUpPanelLayout mLayout;
+
+    public static DiscussionBottomSecondFragment newInstance(int page, String pageData, SlidingUpPanelLayout view) {
         DiscussionBottomSecondFragment fragment = new DiscussionBottomSecondFragment();
+        mLayout = view;
 
         Bundle args = new Bundle();
         args.putInt("page", page);
@@ -100,22 +104,17 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     }
 
     private void init() {
-        adapter = new ReplyListAdapter();
-
         replyListView = wrapper.findViewById(R.id.lv_reply_list);
+
+        adapter = new ReplyListAdapter(replyListView);
         replyListView.setAdapter(adapter);
+
+        mLayout.setScrollableView(replyListView);
 
         chan = wrapper.findViewById(R.id.tv_chan);
         ban = wrapper.findViewById(R.id.tv_ban);
         enter = wrapper.findViewById(R.id.iv_enter);
         etContents = wrapper.findViewById(R.id.et_contents);
-        //엔터 시 검색? 줄바꿈?
-//        etContents.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-//                return false;
-//            }
-//        });
 
         chan.setOnClickListener(this);
         ban.setOnClickListener(this);

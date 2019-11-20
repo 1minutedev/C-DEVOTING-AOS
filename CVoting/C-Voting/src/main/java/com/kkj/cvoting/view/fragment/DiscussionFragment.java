@@ -2,11 +2,9 @@ package com.kkj.cvoting.view.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kkj.cvoting.R;
+import com.kkj.cvoting.util.CustomViewPager;
 import com.kkj.cvoting.util.SlidingUpPanelLayout;
-import com.kkj.cvoting.view.MainFragmentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -51,6 +46,9 @@ public class DiscussionFragment extends Fragment {
     private LinearLayout llChanPer;
     private LinearLayout llBanPer;
     private LinearLayout llGitaPer;
+    private TextView tvChan;
+    private TextView tvBan;
+    private TextView tvGita;
 
     private JSONObject bottomFirstPageData;
     private JSONObject bottomSecondPageData;
@@ -64,9 +62,14 @@ public class DiscussionFragment extends Fragment {
     private String endDate = "";
     private String dDay = "";
 
+    private int totalCnt;
     private int chanCnt;
     private int banCnt;
     private int gitaCnt;
+
+    private String chanPer = "";
+    private String banPer = "";
+    private String gitaPer = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +90,14 @@ public class DiscussionFragment extends Fragment {
 
         getData();
         setLayout();
+
+        ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
+        btnMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().onBackPressed();
+            }
+        });
     }
 
     private void getData() {
@@ -104,7 +115,7 @@ public class DiscussionFragment extends Fragment {
 
             for (int i = 0; i < reviewList.length(); i++) {
                 JSONObject reviewData = reviewList.getJSONObject(i);
-                if(reviewData.getInt("idx") == idx){
+                if (reviewData.getInt("idx") == idx) {
                     discussionPageData = reviewData;
                 }
             }
@@ -130,6 +141,11 @@ public class DiscussionFragment extends Fragment {
             if (discussionPageData.has("content")) {
                 contents = discussionPageData.getString("content");
             }
+
+            if (discussionPageData.has("totalPartiCnt")) {
+                totalCnt = discussionPageData.getInt("totalPartiCnt");
+            }
+
             if (discussionPageData.has("agreeCnt")) {
                 chanCnt = discussionPageData.getInt("agreeCnt");
             }
@@ -140,7 +156,17 @@ public class DiscussionFragment extends Fragment {
                 gitaCnt = discussionPageData.getInt("neutCnt");
             }
 
+            double chanPer = chanCnt * 100 / totalCnt;
+            double banPer = banCnt * 100 / totalCnt;
+            int gitaPer = 100 - (int) chanPer - (int) banPer;
+
+            this.chanPer = String.valueOf((int) chanPer);
+            this.banPer = String.valueOf((int) banPer);
+            this.gitaPer = String.valueOf(gitaPer);
+
             bottomFirstPageData = new JSONObject();
+            bottomFirstPageData.put("totalCnt", totalCnt);
+
             bottomSecondPageData = new JSONObject();
             if (discussionPageData.has("cmtList")) {
                 bottomSecondPageData.put("cmtList", discussionPageData.getJSONArray("cmtList"));
@@ -171,9 +197,32 @@ public class DiscussionFragment extends Fragment {
         });
 
         // ViewPager
-        ViewPager vpPager = (ViewPager) wrapper.findViewById(R.id.vp_pager);
+        CustomViewPager vpPager = (CustomViewPager) wrapper.findViewById(R.id.vp_pager);
+        vpPager.setSlidingLayout(mLayout);
+
+        vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    SlidingUpPanelLayout.isLock = true;
+                } else {
+                    SlidingUpPanelLayout.isLock = false;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         adapterViewPager = new CustomPagerAdapter(getChildFragmentManager());
         vpPager.setAdapter(adapterViewPager);
+        vpPager.setSlidingLayout(mLayout);
 
         CircleIndicator indicator = (CircleIndicator) wrapper.findViewById(R.id.indicator);
         indicator.setViewPager(vpPager);
@@ -187,8 +236,13 @@ public class DiscussionFragment extends Fragment {
         tvContents = wrapper.findViewById(R.id.tv_contents);
 
         llChanPer = wrapper.findViewById(R.id.ll_chan_per);
+        tvChan = wrapper.findViewById(R.id.tv_chan_per);
+
         llBanPer = wrapper.findViewById(R.id.ll_ban_per);
+        tvBan = wrapper.findViewById(R.id.tv_ban_per);
+
         llGitaPer = wrapper.findViewById(R.id.ll_gita_per);
+        tvGita = wrapper.findViewById(R.id.tv_gita_per);
 
         //제목
         tvSubject.setText(subject);
@@ -232,6 +286,25 @@ public class DiscussionFragment extends Fragment {
 
         //컨텐츠
         tvContents.setText(contents);
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int deviceWidth = displayMetrics.widthPixels;
+
+        tvChan.setText(chanPer + "%");
+        tvBan.setText(banPer + "%");
+        tvGita.setText(gitaPer + "%");
+
+        LinearLayout.LayoutParams chanPerParams = (LinearLayout.LayoutParams) llChanPer.getLayoutParams();
+        chanPerParams.width = deviceWidth * Integer.parseInt(chanPer) / 100;
+        llChanPer.setLayoutParams(chanPerParams);
+
+        LinearLayout.LayoutParams banPerParams = (LinearLayout.LayoutParams) llBanPer.getLayoutParams();
+        banPerParams.width = deviceWidth * Integer.parseInt(banPer) / 100;
+        llBanPer.setLayoutParams(banPerParams);
+
+        LinearLayout.LayoutParams gitaPerParams = (LinearLayout.LayoutParams) llGitaPer.getLayoutParams();
+        gitaPerParams.width = deviceWidth - chanPerParams.width - banPerParams.width;
+        llGitaPer.setLayoutParams(gitaPerParams);
     }
 
     public class CustomPagerAdapter extends FragmentPagerAdapter {
@@ -250,16 +323,12 @@ public class DiscussionFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DiscussionBottomFirstFragment.newInstance(0, bottomFirstPageData.toString());
+                    return DiscussionBottomFirstFragment.newInstance(0, bottomFirstPageData.toString(), mLayout);
                 case 1:
-                    return DiscussionBottomSecondFragment.newInstance(1, bottomSecondPageData.toString());
+                    return DiscussionBottomSecondFragment.newInstance(1, bottomSecondPageData.toString(), mLayout);
                 default:
                     return null;
             }
         }
-    }
-
-    private String getDday() {
-        return "";
     }
 }

@@ -36,6 +36,7 @@
                 android:gravity="center">
 
                 <ImageView
+                    android:id="@+id/btn_gohome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

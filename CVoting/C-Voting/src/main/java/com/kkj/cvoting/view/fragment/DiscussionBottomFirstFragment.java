@@ -10,15 +10,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kkj.cvoting.R;
+import com.kkj.cvoting.util.SlidingUpPanelLayout;
 
 import org.json.JSONObject;
 
 
 public class DiscussionBottomFirstFragment extends Fragment implements View.OnClickListener {
     private View wrapper;
+    private static SlidingUpPanelLayout mLayout;
 
-    public static DiscussionBottomFirstFragment newInstance(int page, String pageData) {
+    public static DiscussionBottomFirstFragment newInstance(int page, String pageData, SlidingUpPanelLayout view) {
         DiscussionBottomFirstFragment fragment = new DiscussionBottomFirstFragment();
+        mLayout = view;
 
         Bundle args = new Bundle();
         args.putInt("page", page);
@@ -39,13 +42,42 @@ public class DiscussionBottomFirstFragment extends Fragment implements View.OnCl
         return wrapper;
     }
 
+    private TextView tvTotalCnt;
     private TextView chan;
     private TextView ban;
     private TextView gita;
 
+    private int totalCnt = 0;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Bundle bun = getArguments();
+
+        JSONObject pageData = null;
+
+        try {
+            pageData = new JSONObject(bun.getString("pageData"));
+            if(pageData.has("totalCnt")){
+                totalCnt = pageData.getInt("totalCnt");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        StringBuffer totalText = new StringBuffer();
+        totalText.append(totalCnt);
+        if(totalText.length() > 3) {
+            totalText.insert(totalText.length() - 3, ",");
+        }
+
+        totalText.insert(0, "총 참여 ");
+        totalText.append("명");
+
+        tvTotalCnt = wrapper.findViewById(R.id.tv_total_cnt);
+        tvTotalCnt.setText(totalText);
+
 
         chan = wrapper.findViewById(R.id.circle_chan);
         ban = wrapper.findViewById(R.id.circle_ban);

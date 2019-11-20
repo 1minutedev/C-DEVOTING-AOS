@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript">
+        //플러그인 호출 시 해당 함수로 호출하도록 함
+        function callPlugin(id, param){
+            var bridge = window.KKJBridge;
+
+            var data = {
+                "id" : id,
+                "param" : param
+            };
+
+            bridge.callPlugin(JSON.stringify(data));
+        }
+
+        function testPlugin(){
+            var param = {
+                test_data : "data",
+                callback : "callback" //콜백 받을 함수 명
+            };
+
+            callPlugin("TEST", param);
+        }
+
+        function showDiscussionPage(){
+            var param = {
+                page_data : {
+                },
+                callback : "callback" //콜백 받을 함수 명
+            };
+
+            callPlugin("SHOW_DISCUSSION", param);
+        }
+        function setStorage(){
+            var param = {
+                storage_name : "hahaha",
+                data : [
+                    {"name" : "간간지"},
+                    {"age" : "197"},
+                    {"height" : "997"},
+                    {"phoneNum" : "01090000000"}
+                ],
+                callback : "callback" //콜백 받을 함수 명
+            };
+
+            callPlugin("SET_SHARED_STORAGE", param);
+        }
+        function getStorage(){
+            var param = {
+                storage_name : "",
+                callback : "callback" //콜백 받을 함수 명
+            };
+
+            callPlugin("GET_SHARED_STORAGE", param);
+        }
+
+        //콜백받을 함수
+        function callback(result){
+            alert(JSON.stringify(result));
+        }
+    </script>
+</head>
+<body>
+    <button type="button" onclick="javascript:testPlugin()">TEST Plugin 호출</button><br><br>
+    <button type="button" onclick="javascript:showDiscussionPage()">심의화면 Plugin 호출</button><br><br>
+    <button type="button" onclick="javascript:setStorage()">Set Storage 호출</button><br><br>
+    <button type="button" onclick="javascript:getStorage()">Get Storage 호출</button><br><br>
+</body>
+</html>

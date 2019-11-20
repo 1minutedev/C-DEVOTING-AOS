@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -21,8 +22,9 @@ public class ReplyListAdapter extends BaseAdapter {
     private TextView goodCnt = null;
     private TextView replyCnt = null;
 
-    public ReplyListAdapter() {
-
+    private ListView mListView = null;
+    public ReplyListAdapter(ListView view) {
+        mListView = view;
     }
 
     @Override
@@ -70,12 +72,13 @@ public class ReplyListAdapter extends BaseAdapter {
             holder.tvReplyCnt = (TextView) convertView.findViewById(R.id.tv_reply_cnt);
 
             ScrollView scrollView = convertView.findViewById(R.id.sv_contents);
-            scrollView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    return true;
-                }
-            });
+//            scrollView.setOnTouchListener(new View.OnTouchListener() {
+////                @Override
+////                public boolean onTouch(View view, MotionEvent motionEvent) {
+////                    mListView.requestDisallowInterceptTouchEvent(true);
+////                    return false;
+////                }
+////            });
             convertView.setTag(holder);
 //        } else {
 //            holder = (ReplyViewHolder) convertView.getTag();

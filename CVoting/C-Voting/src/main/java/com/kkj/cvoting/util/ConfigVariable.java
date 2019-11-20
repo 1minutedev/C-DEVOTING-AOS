@@ -13,4 +13,5 @@ public class ConfigVariable {
     public static final String CONTENTS_HTML = "contents/index.html";
 
     public static final int REQUEST_CODE_SETTINGVIEW = 40001;
+    public static final int REQUEST_CODE_GET_IMAGE_PICK = 40002;
 }

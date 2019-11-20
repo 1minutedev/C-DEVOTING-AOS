@@ -9,8 +9,10 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 import com.kkj.cvoting.R;
+import com.kkj.cvoting.plugin.GetImagePick;
 import com.kkj.cvoting.util.ConfigVariable;
 import com.kkj.cvoting.view.activity.SettingActivity;
+import com.kkj.cvoting.view.fragment.DiscussionFragment;
 import com.kkj.cvoting.view.fragment.MainFragment;
 import com.kkj.cvoting.view.fragment.SplashFragment;
 
@@ -122,10 +124,10 @@ public class MainFragmentActivity extends FragmentActivity {
 
                 final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
 
-                if(currentFragment instanceof MainFragment){
-                    if(((MainFragment)currentFragment).webView.canGoBack()){
+                if(currentFragment instanceof MainFragment) {
+                    if (((MainFragment) currentFragment).webView.canGoBack()) {
                         closeFragment = false;
-                        ((MainFragment)currentFragment).webView.goBack();
+                        ((MainFragment) currentFragment).webView.goBack();
                     }
                 }
 
@@ -134,7 +136,7 @@ public class MainFragmentActivity extends FragmentActivity {
 
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .setCustomAnimations(getResources().getIdentifier("hold", "anim", getPackageName()), getResources().getIdentifier("anim_slide_out_right", "anim", getPackageName()))
+//                            .setCustomAnimations(getResources().getIdentifier("hold", "anim", getPackageName()), getResources().getIdentifier("anim_slide_out_right", "anim", getPackageName()))
                             .remove(currentFragment)
                             .show(showFragment)
                             .commitAllowingStateLoss();
@@ -187,6 +189,8 @@ public class MainFragmentActivity extends FragmentActivity {
             if (getFragmentList().get(getFragmentListSize() - 1) instanceof MainFragment) {
                 ((MainFragment) getFragmentList().get(getFragmentListSize() - 1)).loadWebView();
             }
+        } else if(requestCode == ConfigVariable.REQUEST_CODE_GET_IMAGE_PICK){
+            GetImagePick.onActivityResult(data, this);
         }
     }
 }

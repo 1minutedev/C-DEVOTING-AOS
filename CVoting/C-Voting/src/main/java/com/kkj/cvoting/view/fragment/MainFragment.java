@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.widget.ImageView;
 
 import com.kkj.cvoting.R;
 import com.kkj.cvoting.application.Init;
@@ -39,6 +40,14 @@ public class MainFragment extends Fragment {
 
         initWebView();
         loadWebView();
+
+        ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
+        btnMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadWebView();
+            }
+        });
     }
 
     private void initWebView() {

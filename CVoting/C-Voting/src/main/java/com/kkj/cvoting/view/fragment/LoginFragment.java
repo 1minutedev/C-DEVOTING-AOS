@@ -15,8 +15,10 @@ import com.kkj.cvoting.view.MainFragmentActivity;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -94,15 +96,24 @@ public class LoginFragment extends Fragment {
     public static String inputStreamToString(InputStream is) {
         StringBuffer out = new StringBuffer();
         byte[] b = new byte[4096];
+
+        BufferedReader reader = null;
+
         try {
-            String str = "";
-            for (int n; (n = is.read(b)) != -1; ) {
-                str = new String(b, 0, n);
-                if (!str.equals("\n") && !str.equals("\t") && !str.equals("\r"))
-                    out.append(new String(b, 0, n));
+            reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line = "";
+            while((line = reader.readLine()) != null){
+                out.append(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
+            if(is != null){
+                try {
+                    is.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
         return out.toString();
     }
