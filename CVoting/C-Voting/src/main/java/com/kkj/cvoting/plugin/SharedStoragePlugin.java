@@ -21,6 +21,7 @@ public class SharedStoragePlugin extends BasePlugin {
 
     private String callback = "";
     private String storageName = "default";
+    private String listName = "";
 
     private JSONObject result;
 
@@ -36,6 +37,9 @@ public class SharedStoragePlugin extends BasePlugin {
             if (param.has("storage_name")) {
                 storageName = param.getString("storage_name");
             }
+            if (param.has("list_name")) {
+                listName = param.getString("list_name");
+            }
 
             if(TextUtils.isEmpty(storageName)){
                 storageName = "default";
@@ -46,7 +50,13 @@ public class SharedStoragePlugin extends BasePlugin {
             if (id.equals(CallID.SET_SHARED_STORAGE)) {
                 result = setSharedStorage(param);
             } else if (id.equals(CallID.GET_SHARED_STORAGE)) {
-                result = getSharedStorage();
+                if(TextUtils.isEmpty(listName)){
+                    result = new JSONObject();
+                    result.put("result", false);
+                    result.put("err_message", "list_name not found");
+                } else {
+                    result = getSharedStorage();
+                }
             }
 
             listener.sendCallback(callback, result);
@@ -77,16 +87,15 @@ public class SharedStoragePlugin extends BasePlugin {
     }
 
     private JSONObject getSharedStorage() throws JSONException {
-        HashMap<String, String> datas = (HashMap<String, String>) pref.getAll();
+        JSONObject resultData = new JSONObject();
 
-        JSONObject storedData = new JSONObject();
-        for(String key : datas.keySet()){
-            storedData.put(key, datas.get(key));
+        JSONObject baseData = new JSONObject(pref.getString("baseData", ""));
+
+        if(baseData.has(listName)){
+            resultData.put("result", true);
+            resultData.put("stored_data", baseData.getJSONArray(listName));
         }
 
-        JSONObject resultData = new JSONObject();
-        resultData.put("result", true);
-        resultData.put("stored_data", storedData);
         return resultData;
     }
 

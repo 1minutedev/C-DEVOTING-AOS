@@ -108,7 +108,6 @@ public class DiscussionFragment extends Fragment {
 
             SharedPreferences pref = getActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
             JSONObject allData = new JSONObject(pref.getString("baseData", ""));
-
             JSONArray reviewList = allData.getJSONArray("ReviewList");
 
             int idx = pageData.getInt("idx");
@@ -165,9 +164,14 @@ public class DiscussionFragment extends Fragment {
             this.gitaPer = String.valueOf(gitaPer);
 
             bottomFirstPageData = new JSONObject();
+            bottomFirstPageData.put("idx", idx);
             bottomFirstPageData.put("totalCnt", totalCnt);
+            bottomFirstPageData.put("agreeCnt", chanCnt);
+            bottomFirstPageData.put("oppCnt", banCnt);
+            bottomFirstPageData.put("neutCnt", gitaCnt);
 
             bottomSecondPageData = new JSONObject();
+            bottomSecondPageData.put("idx", idx);
             if (discussionPageData.has("cmtList")) {
                 bottomSecondPageData.put("cmtList", discussionPageData.getJSONArray("cmtList"));
             }
@@ -270,7 +274,8 @@ public class DiscussionFragment extends Fragment {
             Date endDate = endDateFormat.parse(this.endDate);
             Date curDate = endDateFormat.parse(cur);
 
-            dDay = dDayFormat.format(endDate.getTime() - curDate.getTime() - (60 * 60 * 24 * 1000));
+            dDay = dDayFormat.format(endDate.getTime() - curDate.getTime());
+//            dDay = dDayFormat.format(endDate.getTime() - curDate.getTime() - (60 * 60 * 24 * 1000));
             tvDday.setText(dDay);
         } catch (Exception e) {
             e.printStackTrace();
@@ -307,6 +312,27 @@ public class DiscussionFragment extends Fragment {
         llGitaPer.setLayoutParams(gitaPerParams);
     }
 
+    public void refreshPercent(String chanPer, String banPer, String gitaPer){
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        int deviceWidth = displayMetrics.widthPixels;
+
+        tvChan.setText(chanPer + "%");
+        tvBan.setText(banPer + "%");
+        tvGita.setText(gitaPer + "%");
+
+        LinearLayout.LayoutParams chanPerParams = (LinearLayout.LayoutParams) llChanPer.getLayoutParams();
+        chanPerParams.width = deviceWidth * Integer.parseInt(chanPer) / 100;
+        llChanPer.setLayoutParams(chanPerParams);
+
+        LinearLayout.LayoutParams banPerParams = (LinearLayout.LayoutParams) llBanPer.getLayoutParams();
+        banPerParams.width = deviceWidth * Integer.parseInt(banPer) / 100;
+        llBanPer.setLayoutParams(banPerParams);
+
+        LinearLayout.LayoutParams gitaPerParams = (LinearLayout.LayoutParams) llGitaPer.getLayoutParams();
+        gitaPerParams.width = deviceWidth - chanPerParams.width - banPerParams.width;
+        llGitaPer.setLayoutParams(gitaPerParams);
+    }
+
     public class CustomPagerAdapter extends FragmentPagerAdapter {
         private int NUM_ITEMS = 2;
 
@@ -323,7 +349,7 @@ public class DiscussionFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DiscussionBottomFirstFragment.newInstance(0, bottomFirstPageData.toString(), mLayout);
+                    return DiscussionBottomFirstFragment.newInstance(0, bottomFirstPageData.toString(), mLayout, DiscussionFragment.this);
                 case 1:
                     return DiscussionBottomSecondFragment.newInstance(1, bottomSecondPageData.toString(), mLayout);
                 default:

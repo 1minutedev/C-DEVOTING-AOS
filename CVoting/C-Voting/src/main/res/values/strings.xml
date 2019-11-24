@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">CVoting</string>
     <string name="app_dev_name">(DEV)CVoting</string>
+
+    <string name="dialog_txt_chan">이 글에 대해 찬성하십니까?</string>
+    <string name="dialog_txt_ban">이 글에 대해 반대하십니까?</string>
+
+    <string name="txt_ok">확인</string>
+    <string name="txt_cancel">취소</string>
 </resources>
