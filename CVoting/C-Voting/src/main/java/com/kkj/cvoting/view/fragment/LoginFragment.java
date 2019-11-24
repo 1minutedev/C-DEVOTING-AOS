@@ -52,6 +52,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 MainFragment mainFragment = new MainFragment();
+//                DiscussionFragment mainFragment = new DiscussionFragment();
 
                 //데이터 넘길게 있다면,
                 Bundle bundle = new Bundle();

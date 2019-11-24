@@ -48,7 +48,13 @@ public class SharedStoragePlugin extends BasePlugin {
             pref = getActivity().getSharedPreferences(storageName, Context.MODE_PRIVATE);
 
             if (id.equals(CallID.SET_SHARED_STORAGE)) {
-                result = setSharedStorage(param);
+                if(TextUtils.isEmpty(listName)){
+                    result = new JSONObject();
+                    result.put("result", false);
+                    result.put("err_message", "list_name not found");
+                } else {
+                    result = setSharedStorage(param);
+                }
             } else if (id.equals(CallID.GET_SHARED_STORAGE)) {
                 if(TextUtils.isEmpty(listName)){
                     result = new JSONObject();
@@ -68,15 +74,12 @@ public class SharedStoragePlugin extends BasePlugin {
     private JSONObject setSharedStorage(JSONObject param) throws JSONException {
         SharedPreferences.Editor editor = pref.edit();
 
-        JSONArray datas = param.getJSONArray("data");
+        JSONArray data = param.getJSONArray("data");
 
-        for (int i = 0; i < datas.length(); i++) {
-            JSONObject data = datas.getJSONObject(i);
-            String key = data.keys().next();
-            String value = data.getString(key);
+        JSONObject baseData = new JSONObject(pref.getString("baseData", ""));
+        baseData.put(listName, data);
 
-            editor.putString(key, value);
-        }
+        editor.putString("baseData", baseData.toString());
 
         editor.commit();
 
