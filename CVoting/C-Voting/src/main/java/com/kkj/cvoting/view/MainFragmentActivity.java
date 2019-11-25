@@ -182,7 +182,7 @@ public class MainFragmentActivity extends FragmentActivity {
                 .commitAllowingStateLoss();
         removeFragment(currentFragment);
 
-        ((MainFragment) showFragment).loadWebView(true);
+        ((MainFragment) showFragment).loadWebView();
     }
 
     @Override
@@ -209,7 +209,7 @@ public class MainFragmentActivity extends FragmentActivity {
             touched = false;
 
             if (getFragmentList().get(getFragmentListSize() - 1) instanceof MainFragment) {
-                ((MainFragment) getFragmentList().get(getFragmentListSize() - 1)).loadWebView(true);
+                ((MainFragment) getFragmentList().get(getFragmentListSize() - 1)).loadWebView();
             }
         } else if (requestCode == ConfigVariable.REQUEST_CODE_GET_IMAGE_PICK) {
             GetImagePick.onActivityResult(data, this);

@@ -98,14 +98,12 @@ public class DiscussionFragment extends Fragment {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //컴백 홈~
                 ((MainFragmentActivity)getActivity()).comeBackHome();
             }
         });
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //컴백 홈~
                 ((MainFragmentActivity)getActivity()).comeBackHome();
             }
         });

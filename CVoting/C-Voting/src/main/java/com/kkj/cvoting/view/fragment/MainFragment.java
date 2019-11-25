@@ -42,13 +42,13 @@ public class MainFragment extends Fragment {
         wrapper.setClickable(true);
 
         initWebView();
-        loadWebView(false);
+        loadWebView();
 
         ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadWebView(true);
+                loadWebView();
             }
         });
     }
@@ -79,17 +79,8 @@ public class MainFragment extends Fragment {
         webView.addJavascriptInterface(new KKJBridge(getActivity(), webView), "KKJBridge");
     }
 
-    public void loadWebView(boolean clearHistory) {
-        this.clearHistory = clearHistory;
-
+    public void loadWebView() {
         String url = ((Init) getActivity().getApplication()).getStartPage();
         webView.loadUrl(url);
-    }
-
-    public void onPageFinished(WebView view, String url){
-        if(clearHistory) {
-            clearHistory = false;
-            view.clearHistory();
-        }
     }
 }
