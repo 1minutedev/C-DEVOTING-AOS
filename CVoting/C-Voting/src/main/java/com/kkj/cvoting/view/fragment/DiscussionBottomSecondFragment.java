@@ -1,5 +1,7 @@
 package com.kkj.cvoting.view.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,8 +48,10 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
 
     private JSONObject pageData;
     private JSONArray cmtList;
+    private int idx = 0;
 
     private static SlidingUpPanelLayout mLayout;
+    private SharedPreferences pref;
 
     public static DiscussionBottomSecondFragment newInstance(int page, String pageData, SlidingUpPanelLayout view) {
         DiscussionBottomSecondFragment fragment = new DiscussionBottomSecondFragment();
@@ -75,13 +79,15 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        init();
+        pref = getActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
 
         Bundle data = getArguments();
         try {
             pageData = new JSONObject(data.getString("pageData"));
+            idx = pageData.getInt("idx");
             cmtList = pageData.getJSONArray("cmtList");
+
+            init();
 
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -89,7 +95,11 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
                     try {
                         for (int i = 0; i < cmtList.length(); i++) {
                             JSONObject cmt = cmtList.getJSONObject(i);
-                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), 0, cmt.getJSONArray("replyCmtList").length());
+                            boolean isGood = false;
+                            if(cmt.has("isGood")){
+                                isGood = cmt.getBoolean("isGood");
+                            }
+                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), cmt.getInt("goodCnt"), cmt.getJSONArray("replyCmtList").length(), isGood);
                             adapter.notifyDataSetChanged();
                         }
                     }catch(Exception e){
@@ -106,7 +116,7 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     private void init() {
         replyListView = wrapper.findViewById(R.id.lv_reply_list);
 
-        adapter = new ReplyListAdapter(replyListView);
+        adapter = new ReplyListAdapter(replyListView, getActivity(), idx);
         replyListView.setAdapter(adapter);
 
         mLayout.setScrollableView(replyListView);
@@ -179,14 +189,48 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapter.addItem(adapter.getCount() + 1, type, "김민지(학부 재학생)", contents, 0, 0);
+                    String user = "***(학부 재학생)";
+                    adapter.addItem(adapter.getCount(), type, user, contents, 0, 0, false);
                     adapter.notifyDataSetChanged();
 
                     etContents.setText("");
                     replyListView.setSelection(adapter.getCount() - 1);
+
+                    //댓글 저장
+                    try {
+                        JSONObject data = new JSONObject(pref.getString("baseData", ""));
+                        JSONArray reviewList = data.getJSONArray("ReviewList");
+                        JSONObject review = reviewList.getJSONObject(idx);
+                        JSONArray cmtList;
+                        if(review.has("cmtList")) {
+                            cmtList = review.getJSONArray("cmtList");
+                        } else {
+                            cmtList = new JSONArray();
+                        }
+
+                        JSONObject cmt = new JSONObject();
+                        cmt.put("cmt_idx", adapter.getCount());
+                        cmt.put("type", type);
+                        cmt.put("writer", user);
+                        cmt.put("content", contents);
+                        cmt.put("replyCmtList", new JSONArray());
+
+                        cmtList.put(cmt);
+
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("baseData", data.toString());
+
+                        editor.commit();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
                 }
             });
         }
+    }
+
+    private void saveData(){
+
     }
 
     private String inputStreamToString(InputStream is) {

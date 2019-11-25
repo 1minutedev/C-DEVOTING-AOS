@@ -7,6 +7,7 @@ public class ReplyItem {
     private String contents;
     private int goodCnt;
     private int replyCnt;
+    private boolean isGood;
 
     public void setNum(int num) {
         this.num = num;
@@ -48,5 +49,12 @@ public class ReplyItem {
     }
     public int getReplyCnt() {
         return replyCnt;
+    }
+
+    public void setGood(boolean good) {
+        isGood = good;
+    }
+    public boolean getGood(){
+        return isGood;
     }
 }

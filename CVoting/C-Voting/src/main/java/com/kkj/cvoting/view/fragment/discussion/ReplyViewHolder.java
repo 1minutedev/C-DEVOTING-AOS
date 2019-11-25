@@ -4,6 +4,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ReplyViewHolder {
+    public int cmtIdx;
+    public String type;
+    public boolean isGood;
+
     public ImageView ivGood;
     public ImageView ivReply;
     public ImageView ivPiyong;

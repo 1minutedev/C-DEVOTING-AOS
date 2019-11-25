@@ -5,6 +5,11 @@
     <string name="dialog_txt_chan">이 글에 대해 찬성하십니까?</string>
     <string name="dialog_txt_ban">이 글에 대해 반대하십니까?</string>
 
+    <string name="dialog_txt_piyong">이 의견을 신고하시겠습니까?</string>
+
+    <string name="dialog_txt_good">이 의견을 추천하시겠습니까?</string>
+    <string name="dialog_txt_good_cancel">추천을 취소하시겠습니까?</string>
+
     <string name="txt_ok">확인</string>
     <string name="txt_cancel">취소</string>
 </resources>

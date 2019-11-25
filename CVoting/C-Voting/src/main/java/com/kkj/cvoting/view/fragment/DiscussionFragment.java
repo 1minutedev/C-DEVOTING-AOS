@@ -107,6 +107,8 @@ public class DiscussionFragment extends Fragment {
                 ((MainFragmentActivity)getActivity()).comeBackHome();
             }
         });
+
+        SlidingUpPanelLayout.isLock = true;
     }
 
     private void getData() {
