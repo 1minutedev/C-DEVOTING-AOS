@@ -99,7 +99,7 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
                             if(cmt.has("isGood")){
                                 isGood = cmt.getBoolean("isGood");
                             }
-                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), cmt.getInt("goodCnt"), cmt.getJSONArray("replyCmtList").length(), isGood);
+                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), cmt.getInt("goodCnt"), cmt.getJSONArray("replyCmtList").length(), isGood, cmt.getJSONArray("replyCmtList"));
                             adapter.notifyDataSetChanged();
                         }
                     }catch(Exception e){
@@ -190,7 +190,7 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
                 @Override
                 public void run() {
                     String user = "***(학부 재학생)";
-                    adapter.addItem(adapter.getCount(), type, user, contents, 0, 0, false);
+                    adapter.addItem(adapter.getCount(), type, user, contents, 0, 0, false, new JSONArray());
                     adapter.notifyDataSetChanged();
 
                     etContents.setText("");

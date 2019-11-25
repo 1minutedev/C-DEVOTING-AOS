@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.kkj.cvoting.R;
+import com.kkj.cvoting.view.fragment.DiscussionFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AlertDialog;
 
-public class ReplyListAdapter extends BaseAdapter implements View.OnClickListener {
+public class ReplyListAdapter extends BaseAdapter {
     private ArrayList<ReplyItem> replyList = new ArrayList<ReplyItem>();
 
     private TextView userName = null;
@@ -76,6 +77,7 @@ public class ReplyListAdapter extends BaseAdapter implements View.OnClickListene
         holder.cmtIdx = replyItem.getNum();
         holder.type = type;
         holder.isGood = replyItem.getGood();
+        holder.replyList = replyItem.getReplyList();
 
         if (type.equals("chan")) {
             view = inflater.inflate(R.layout.fragment_discussion_bottom2_item1, parent, false);
@@ -220,7 +222,13 @@ public class ReplyListAdapter extends BaseAdapter implements View.OnClickListene
             });
         }
 
-        holder.ivReply.setOnClickListener(this);
+        holder.ivReply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DiscussionFragment.showPopup(fHolder.replyList, activity);
+            }
+        });
+
         holder.ivPiyong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,7 +255,7 @@ public class ReplyListAdapter extends BaseAdapter implements View.OnClickListene
         return view;
     }
 
-    public void addItem(int num, String type, String user, String contents, int goodCnt, int replyCnt, boolean isGood) {
+    public void addItem(int num, String type, String user, String contents, int goodCnt, int replyCnt, boolean isGood, JSONArray list) {
         ReplyItem item = new ReplyItem();
 
         item.setNum(num);
@@ -257,24 +265,9 @@ public class ReplyListAdapter extends BaseAdapter implements View.OnClickListene
         item.setGoodCnt(goodCnt);
         item.setReplyCnt(replyCnt);
         item.setGood(isGood);
+        item.setReplyList(list);
 
         replyList.add(item);
     }
 
-    @Override
-    public void onClick(View view) {
-        ReplyViewHolder holder = (ReplyViewHolder) view.getTag();
-        final ReplyViewHolder rvHolder = holder;
-
-        switch (view.getId()) {
-            case R.id.iv_good:
-                break;
-            case R.id.iv_reply:
-                break;
-            case R.id.iv_piyong:
-                break;
-            default:
-                break;
-        }
-    }
 }

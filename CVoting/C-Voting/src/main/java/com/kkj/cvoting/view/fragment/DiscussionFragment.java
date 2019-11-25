@@ -1,15 +1,19 @@
 package com.kkj.cvoting.view.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.kkj.cvoting.R;
@@ -72,6 +76,9 @@ public class DiscussionFragment extends Fragment {
     private String banPer = "";
     private String gitaPer = "";
 
+    public static LinearLayout popupLayout;
+    public static LinearLayout llReplyList;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +101,22 @@ public class DiscussionFragment extends Fragment {
 
         ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
         ImageView btnBack = wrapper.findViewById(R.id.btn_back);
+
+        popupLayout = wrapper.findViewById(R.id.ll_popup);
+        ImageView ivClose = wrapper.findViewById(R.id.iv_close);
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(popupLayout!=null) {
+                    if (popupLayout.getVisibility() == View.VISIBLE) {
+                        popupLayout.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        llReplyList = wrapper.findViewById(R.id.ll_reply_list);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -366,6 +389,36 @@ public class DiscussionFragment extends Fragment {
                 default:
                     return null;
             }
+        }
+    }
+
+    public static void showPopup(JSONArray data, Activity activity){
+        try {
+            if (popupLayout != null) {
+                if (popupLayout.getVisibility() == View.GONE) {
+                    popupLayout.setVisibility(View.VISIBLE);
+
+                    llReplyList.removeAllViews();
+
+                    int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, activity.getResources().getDisplayMetrics());
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(margin, margin, 0, margin);
+
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject reply = data.getJSONObject(i);
+                        String content = reply.getString("content");
+
+                        TextView tv = new TextView(activity);
+                        tv.setText("***(학부 재학생) : " + content);
+                        tv.setTextColor(Color.parseColor("#000000"));
+
+                        llReplyList.addView(tv, params);
+                    }
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.kkj.cvoting.view.fragment.discussion;
 
+import org.json.JSONArray;
+
 public class ReplyItem {
     private int num;
     private String type;
@@ -8,6 +10,7 @@ public class ReplyItem {
     private int goodCnt;
     private int replyCnt;
     private boolean isGood;
+    private JSONArray replyList;
 
     public void setNum(int num) {
         this.num = num;
@@ -56,5 +59,11 @@ public class ReplyItem {
     }
     public boolean getGood(){
         return isGood;
+    }
+    public void setReplyList(JSONArray replyList) {
+        this.replyList = replyList;
+    }
+    public JSONArray getReplyList() {
+        return replyList;
     }
 }
