@@ -9,6 +9,7 @@
     "isAttach" : "N",
     "img": "img_initiative_00.jpg",
     "recommandCnt": 100
+
   },
     {
       "idx": 1,
@@ -88,9 +89,9 @@
     "img": "img_review_00.jpg",
     "recommandCnt": 0,
     "totalPartiCnt": 237,
-    "agreeCnt": 167,
-    "oppCnt": 47,
-    "neutCnt": 23,
+    "agreeCnt": 86,
+    "oppCnt": 81,
+    "neutCnt": 70,
     "startDate": "20191112",
     "endDate": "20191126",
     "cmtList": [{
@@ -141,9 +142,9 @@
       "img": "img_review_01.jpg",
       "recommandCnt": 0,
       "totalPartiCnt": 429,
-      "agreeCnt": 351,
-      "oppCnt": 60,
-      "neutCnt": 18,
+      "agreeCnt": 201,
+      "oppCnt": 130,
+      "neutCnt": 98,
       "startDate": "20191114",
       "endDate": "20191128",
       "cmtList": [{
@@ -240,9 +241,9 @@
       "img": "img_review_02.jpg",
       "recommandCnt": 0,
       "totalPartiCnt": 315,
-      "agreeCnt": 280,
-      "oppCnt": 25,
-      "neutCnt": 10,
+      "agreeCnt": 180,
+      "oppCnt": 75,
+      "neutCnt": 60,
       "startDate": "20191107",
       "endDate": "20191121",
       "cmtList": [{
@@ -279,9 +280,9 @@
       "img": "img_review_03.jpg",
       "recommandCnt": 0,
       "totalPartiCnt": 113,
-      "agreeCnt": 70,
-      "oppCnt": 30,
-      "neutCnt": 13,
+      "agreeCnt": 45,
+      "oppCnt": 35,
+      "neutCnt": 33,
       "startDate": "20191105",
       "endDate": "20191119",
       "cmtList": [{

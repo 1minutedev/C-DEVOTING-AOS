@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.kkj.cvoting.R;
 import com.kkj.cvoting.util.CustomViewPager;
 import com.kkj.cvoting.util.SlidingUpPanelLayout;
+import com.kkj.cvoting.view.MainFragmentActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -92,10 +93,20 @@ public class DiscussionFragment extends Fragment {
         setLayout();
 
         ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
+        ImageView btnBack = wrapper.findViewById(R.id.btn_back);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //컴백 홈~
+                ((MainFragmentActivity)getActivity()).comeBackHome();
+            }
+        });
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+                //컴백 홈~
+                ((MainFragmentActivity)getActivity()).comeBackHome();
             }
         });
     }

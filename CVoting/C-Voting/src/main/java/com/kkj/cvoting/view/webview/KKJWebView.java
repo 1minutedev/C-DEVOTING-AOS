@@ -37,4 +37,5 @@ public class KKJWebView extends WebView {
             super.loadUrl(url);
         }
     }
+
 }

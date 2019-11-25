@@ -20,7 +20,7 @@ public class Init extends Application {
         } else {
             SharedPreferences pref = getSharedPreferences("setting", MODE_PRIVATE);
 
-            ConfigVariable.CONTENTS_MODE = pref.getInt("mode", ConfigVariable.CONTENTS_MODE_ABSOLUTE);
+            ConfigVariable.CONTENTS_MODE = pref.getInt("mode", ConfigVariable.CONTENTS_MODE_ASSETS);
             ConfigVariable.CONTENTS_PATH = pref.getString("path", "");
 
             WebView.setWebContentsDebuggingEnabled(true);

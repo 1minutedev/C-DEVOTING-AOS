@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 import com.kkj.cvoting.R;
@@ -20,6 +21,8 @@ import androidx.fragment.app.Fragment;
 public class MainFragment extends Fragment {
     private View wrapper;
     public KKJWebView webView = null;
+
+    private boolean clearHistory = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,13 +42,13 @@ public class MainFragment extends Fragment {
         wrapper.setClickable(true);
 
         initWebView();
-        loadWebView();
+        loadWebView(false);
 
         ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadWebView();
+                loadWebView(true);
             }
         });
     }
@@ -76,8 +79,17 @@ public class MainFragment extends Fragment {
         webView.addJavascriptInterface(new KKJBridge(getActivity(), webView), "KKJBridge");
     }
 
-    public void loadWebView() {
+    public void loadWebView(boolean clearHistory) {
+        this.clearHistory = clearHistory;
+
         String url = ((Init) getActivity().getApplication()).getStartPage();
         webView.loadUrl(url);
+    }
+
+    public void onPageFinished(WebView view, String url){
+        if(clearHistory) {
+            clearHistory = false;
+            view.clearHistory();
+        }
     }
 }

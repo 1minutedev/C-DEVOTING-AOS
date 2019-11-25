@@ -1,7 +1,10 @@
 package com.kkj.cvoting.view;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,6 +21,7 @@ import com.kkj.cvoting.view.fragment.SplashFragment;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -73,9 +77,13 @@ public class MainFragmentActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragmentactivity_main);
 
-        /**
-         * 최초 프래그먼트 추가
-         */
+        checkPermission();
+    }
+
+    /**
+     * 최초 프래그먼트 추가
+     */
+    private void nextProcess() {
         SplashFragment splashFragment = new SplashFragment();
 
         Bundle bundle = new Bundle();
@@ -124,14 +132,14 @@ public class MainFragmentActivity extends FragmentActivity {
 
                 final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
 
-                if(currentFragment instanceof MainFragment) {
+                if (currentFragment instanceof MainFragment) {
                     if (((MainFragment) currentFragment).webView.canGoBack()) {
                         closeFragment = false;
                         ((MainFragment) currentFragment).webView.goBack();
                     }
                 }
 
-                if(closeFragment) {
+                if (closeFragment) {
                     final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
 
                     getSupportFragmentManager()
@@ -163,6 +171,20 @@ public class MainFragmentActivity extends FragmentActivity {
         addFragment(fragment);
     }
 
+    public void comeBackHome() {
+        final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
+        final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(currentFragment)
+                .show(showFragment)
+                .commitAllowingStateLoss();
+        removeFragment(currentFragment);
+
+        ((MainFragment) showFragment).loadWebView(true);
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         int touchCount = event.getPointerCount();
@@ -187,10 +209,43 @@ public class MainFragmentActivity extends FragmentActivity {
             touched = false;
 
             if (getFragmentList().get(getFragmentListSize() - 1) instanceof MainFragment) {
-                ((MainFragment) getFragmentList().get(getFragmentListSize() - 1)).loadWebView();
+                ((MainFragment) getFragmentList().get(getFragmentListSize() - 1)).loadWebView(true);
             }
-        } else if(requestCode == ConfigVariable.REQUEST_CODE_GET_IMAGE_PICK){
+        } else if (requestCode == ConfigVariable.REQUEST_CODE_GET_IMAGE_PICK) {
             GetImagePick.onActivityResult(data, this);
+        }
+    }
+
+    private void checkPermission() {
+        String permissions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            nextProcess();
+        } else {
+            int cnt = 0;
+
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permissions, 0);
+            } else {
+                nextProcess();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    nextProcess();
+                } else {
+                    Toast.makeText(getApplicationContext(), "앱에서 필요한 권한이 없습니다.", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
         }
     }
 }
