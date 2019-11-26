@@ -62,7 +62,7 @@ public class ReplyListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
 
-        ReplyViewHolder holder;
+        final ReplyViewHolder holder = new ReplyViewHolder();
 
         final int pos = position;
         final Context context = parent.getContext();
@@ -71,8 +71,6 @@ public class ReplyListAdapter extends BaseAdapter {
         String type = replyItem.getType();
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        holder = new ReplyViewHolder();
 
         holder.cmtIdx = replyItem.getNum();
         holder.type = type;
@@ -121,18 +119,16 @@ public class ReplyListAdapter extends BaseAdapter {
         holder.tvUser.setText(replyItem.getUser());
         holder.tvContents.setText(replyItem.getContents());
 
-        final ReplyViewHolder fHolder = holder;
-
         if (holder.ivGood != null) {
             holder.ivGood.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String message = "";
 
-                    if (fHolder.isGood) {
-                        message = activity.getResources().getString(R.string.dialog_txt_good);
-                    } else {
+                    if (holder.isGood) {
                         message = activity.getResources().getString(R.string.dialog_txt_good_cancel);
+                    } else {
+                        message = activity.getResources().getString(R.string.dialog_txt_good);
                     }
 
                     new AlertDialog.Builder(activity)
@@ -150,7 +146,7 @@ public class ReplyListAdapter extends BaseAdapter {
                                                 JSONArray reviewList = data.getJSONArray("ReviewList");
                                                 JSONObject review = reviewList.getJSONObject(idx);
                                                 JSONArray cmtList = review.getJSONArray("cmtList");
-                                                JSONObject cmt = cmtList.getJSONObject(fHolder.cmtIdx);
+                                                JSONObject cmt = cmtList.getJSONObject(holder.cmtIdx);
 
                                                 int goodCnt = 0;
 
@@ -164,41 +160,44 @@ public class ReplyListAdapter extends BaseAdapter {
                                                     boolean isGood = cmt.getBoolean("isGood");
 
                                                     if (!isGood) {
+                                                        holder.isGood = true;
                                                         cmt.put("goodCnt", goodCnt + 1);
                                                         cmt.put("isGood", true);
 
-                                                        if (fHolder.type.equals("chan")) {
+                                                        if (holder.type.equals("chan")) {
                                                             drawable = activity.getResources().getDrawable(R.drawable.chan_good_sel);
                                                         } else {
                                                             drawable = activity.getResources().getDrawable(R.drawable.ban_good_sel);
                                                         }
 
-                                                        fHolder.tvGoodCnt.setText(String.valueOf(goodCnt + 1));
-                                                        fHolder.ivGood.setImageDrawable(drawable);
+                                                        holder.tvGoodCnt.setText(String.valueOf(goodCnt + 1));
+                                                        holder.ivGood.setImageDrawable(drawable);
                                                     } else {
+                                                        holder.isGood = false;
                                                         cmt.put("goodCnt", goodCnt - 1);
                                                         cmt.put("isGood", false);
 
-                                                        if (fHolder.type.equals("chan")) {
+                                                        if (holder.type.equals("chan")) {
                                                             drawable = activity.getResources().getDrawable(R.drawable.chan_good);
                                                         } else {
                                                             drawable = activity.getResources().getDrawable(R.drawable.ban_good);
                                                         }
-                                                        fHolder.tvGoodCnt.setText(String.valueOf(goodCnt - 1));
-                                                        fHolder.ivGood.setImageDrawable(drawable);
+                                                        holder.tvGoodCnt.setText(String.valueOf(goodCnt - 1));
+                                                        holder.ivGood.setImageDrawable(drawable);
                                                     }
                                                 } else {
+                                                    holder.isGood = true;
                                                     cmt.put("goodCnt", goodCnt + 1);
                                                     cmt.put("isGood", true);
 
-                                                    if (fHolder.type.equals("chan")) {
+                                                    if (holder.type.equals("chan")) {
                                                         drawable = activity.getResources().getDrawable(R.drawable.chan_good_sel);
                                                     } else {
                                                         drawable = activity.getResources().getDrawable(R.drawable.ban_good_sel);
                                                     }
 
-                                                    fHolder.tvGoodCnt.setText(String.valueOf(goodCnt + 1));
-                                                    fHolder.ivGood.setImageDrawable(drawable);
+                                                    holder.tvGoodCnt.setText(String.valueOf(goodCnt + 1));
+                                                    holder.ivGood.setImageDrawable(drawable);
                                                 }
 
                                                 SharedPreferences.Editor editor = pref.edit();
@@ -225,7 +224,7 @@ public class ReplyListAdapter extends BaseAdapter {
         holder.ivReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DiscussionFragment.showPopup(fHolder.replyList, activity);
+                DiscussionFragment.showPopup(holder.replyList, activity);
             }
         });
 

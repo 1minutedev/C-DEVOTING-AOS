@@ -103,7 +103,7 @@ public class MainFragmentActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if (getFragmentList().size() <= 2) {
+        if (getFragmentList().size() < 4) {
             finishCnt++;
 
             if (finishCnt > 1) {

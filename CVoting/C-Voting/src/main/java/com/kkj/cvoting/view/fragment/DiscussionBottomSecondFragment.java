@@ -99,7 +99,11 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
                             if(cmt.has("isGood")){
                                 isGood = cmt.getBoolean("isGood");
                             }
-                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), cmt.getInt("goodCnt"), cmt.getJSONArray("replyCmtList").length(), isGood, cmt.getJSONArray("replyCmtList"));
+                            int goodCnt = 0;
+                            if(cmt.has("goodCnt")){
+                                goodCnt = cmt.getInt("goodCnt");
+                            }
+                            adapter.addItem(cmt.getInt("cmt_idx"), cmt.getString("type"), cmt.getString("writer"), cmt.getString("content"), goodCnt, cmt.getJSONArray("replyCmtList").length(), isGood, cmt.getJSONArray("replyCmtList"));
                             adapter.notifyDataSetChanged();
                         }
                     }catch(Exception e){

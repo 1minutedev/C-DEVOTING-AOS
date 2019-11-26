@@ -11,8 +11,11 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ import com.kkj.cvoting.R;
 import com.kkj.cvoting.util.CustomViewPager;
 import com.kkj.cvoting.util.SlidingUpPanelLayout;
 import com.kkj.cvoting.view.MainFragmentActivity;
+import com.kkj.cvoting.view.fragment.discussion.ReplyListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +40,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import me.relex.circleindicator.CircleIndicator;
 
-public class DiscussionFragment extends Fragment {
+public class DiscussionFragment extends Fragment implements View.OnClickListener {
     private View wrapper;
 
     private SlidingUpPanelLayout mLayout;
@@ -76,8 +80,17 @@ public class DiscussionFragment extends Fragment {
     private String banPer = "";
     private String gitaPer = "";
 
-    public static LinearLayout popupLayout;
+    public static RelativeLayout popupLayout;
     public static LinearLayout llReplyList;
+    public static ScrollView svReplyList;
+
+    private TextView chan;
+    private TextView ban;
+
+    private EditText etContents;
+    private ImageView enter;
+
+    private String type = "gita";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +115,7 @@ public class DiscussionFragment extends Fragment {
         ImageView btnMain = wrapper.findViewById(R.id.btn_gohome);
         ImageView btnBack = wrapper.findViewById(R.id.btn_back);
 
-        popupLayout = wrapper.findViewById(R.id.ll_popup);
+        popupLayout = wrapper.findViewById(R.id.rl_popup);
         ImageView ivClose = wrapper.findViewById(R.id.iv_close);
 
         ivClose.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +124,23 @@ public class DiscussionFragment extends Fragment {
                 if(popupLayout!=null) {
                     if (popupLayout.getVisibility() == View.VISIBLE) {
                         popupLayout.setVisibility(View.GONE);
+                        popupLayout.setClickable(false);
                     }
                 }
             }
         });
 
         llReplyList = wrapper.findViewById(R.id.ll_reply_list);
+        svReplyList = wrapper.findViewById(R.id.sv_reply_list);
+
+        chan = wrapper.findViewById(R.id.tv_chan);
+        ban = wrapper.findViewById(R.id.tv_ban);
+        enter = wrapper.findViewById(R.id.iv_enter);
+        etContents = wrapper.findViewById(R.id.et_contents);
+
+        chan.setOnClickListener(this);
+        ban.setOnClickListener(this);
+        enter.setOnClickListener(this);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +156,44 @@ public class DiscussionFragment extends Fragment {
         });
 
         SlidingUpPanelLayout.isLock = true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_chan:
+                if (type.equals("chan")) {
+                    type = "gita";
+                    chan.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
+                    chan.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
+                } else {
+                    type = "chan";
+                    chan.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_selected_1));
+                    chan.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_selected));
+                    ban.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
+                    ban.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
+                }
+                break;
+            case R.id.tv_ban:
+                if (type.equals("ban")) {
+                    type = "gita";
+                    ban.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
+                    ban.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
+                } else {
+                    type = "ban";
+                    chan.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
+                    chan.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
+                    ban.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_selected_2));
+                    ban.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_selected));
+                }
+                break;
+            case R.id.iv_enter:
+                addList(etContents.getText().toString());
+                etContents.setText("");
+                break;
+            default:
+                break;
+        }
     }
 
     private void getData() {
@@ -397,6 +459,7 @@ public class DiscussionFragment extends Fragment {
             if (popupLayout != null) {
                 if (popupLayout.getVisibility() == View.GONE) {
                     popupLayout.setVisibility(View.VISIBLE);
+                    popupLayout.setClickable(true);
 
                     llReplyList.removeAllViews();
 
@@ -420,5 +483,21 @@ public class DiscussionFragment extends Fragment {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void addList(String content){
+        int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getActivity().getResources().getDisplayMetrics());
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(margin, margin, 0, margin);
+
+        TextView tv = new TextView(getActivity());
+        tv.setText("***(학부 재학생) : " + content);
+        tv.setTextColor(Color.parseColor("#000000"));
+
+        llReplyList.addView(tv, params);
+
+
+        svReplyList.fullScroll(View.FOCUS_DOWN);
     }
 }
