@@ -1,8 +1,8 @@
 package com.kkj.cvoting.util.bridge;
 
-import android.app.Activity;
 import android.webkit.JavascriptInterface;
 
+import com.kkj.cvoting.plugin.ApplicationFinishPlugin;
 import com.kkj.cvoting.plugin.GetImagePick;
 import com.kkj.cvoting.plugin.SharedStoragePlugin;
 import com.kkj.cvoting.plugin.ShowDiscussionPlugin;
@@ -14,8 +14,10 @@ import com.kkj.cvoting.view.webview.KKJWebView;
 
 import org.json.JSONObject;
 
+import androidx.fragment.app.FragmentActivity;
+
 public class KKJBridge {
-    private Activity activity;
+    private FragmentActivity activity;
     private KKJWebView webView;
 
     private CompleteListener completeListener = new CompleteListener() {
@@ -30,7 +32,7 @@ public class KKJBridge {
         }
     };
 
-    public KKJBridge(Activity activity, KKJWebView webView) {
+    public KKJBridge(FragmentActivity activity, KKJWebView webView) {
         this.activity = activity;
         this.webView = webView;
     }
@@ -43,10 +45,10 @@ public class KKJBridge {
             JSONObject param = null;
             String id = "";
 
-            if(data.has("id")){
+            if (data.has("id")) {
                 id = data.getString("id");
             }
-            if(data.has("param")){
+            if (data.has("param")) {
                 param = data.getJSONObject("param");
             }
 
@@ -66,6 +68,9 @@ public class KKJBridge {
                     break;
                 case CallID.GET_IMAGE_PICK:
                     plugin = new GetImagePick();
+                    break;
+                case CallID.APPLICATION_FINISH:
+                    plugin = new ApplicationFinishPlugin();
                     break;
                 default:
                     canExecute = false;

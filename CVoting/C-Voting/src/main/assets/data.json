@@ -94,7 +94,7 @@
       "oppCnt": 81,
       "neutCnt": 70,
       "startDate": "20191112",
-      "endDate": "20191126",
+      "endDate": "20191130",
       "cmtList": [
         {
           "type": "chan",
@@ -153,7 +153,7 @@
       "oppCnt": 130,
       "neutCnt": 98,
       "startDate": "20191114",
-      "endDate": "20191128",
+      "endDate": "20191204",
       "cmtList": [
         {
           "type": "chan",
@@ -231,22 +231,27 @@
           "replyCmtList": [
             {
               "reply_idx": 0,
+              "type" : "chan",
               "content": "오 좋아요! 두 개의 층이면 남자층이랑 여자층에 각각 설치하면 좋을 것 같아요"
             },
             {
               "reply_idx": 1,
+              "type" : "gita",
               "content": "남자층에는 이미 있잖아요, 4층에"
             },
             {
               "reply_idx": 2,
+              "type" : "gita",
               "content": "그렇다고 여자층에만 추가 설치하는 건 좀 아닌 것 같은데"
             },
             {
               "reply_idx": 3,
+              "type" : "gita",
               "content": "4층에 있는 걸 남자들이 쓰면 되지 않나"
             },
             {
               "reply_idx": 4,
+              "type" : "chan",
               "content": "좋은 의견이네요 한 번에 다 설치해주길 바라는 건 무리인 것 같고.. 어떻게 할지는 결국 총학이 판단하겠죠."
             }
           ],
@@ -269,7 +274,7 @@
       "oppCnt": 75,
       "neutCnt": 60,
       "startDate": "20191107",
-      "endDate": "20191121",
+      "endDate": "20191201",
       "cmtList": [
         {
           "type": "chan",
@@ -312,7 +317,7 @@
       "oppCnt": 35,
       "neutCnt": 33,
       "startDate": "20191105",
-      "endDate": "20191119",
+      "endDate": "20191202",
       "cmtList": [
         {
           "type": "chan",

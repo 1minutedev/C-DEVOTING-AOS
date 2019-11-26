@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AlertDialog;
 
 public class ReplyListAdapter extends BaseAdapter {
-    private ArrayList<ReplyItem> replyList = new ArrayList<ReplyItem>();
+    private static ArrayList<ReplyItem> replyList = new ArrayList<ReplyItem>();
 
     private TextView userName = null;
     private TextView contents = null;
@@ -61,7 +61,6 @@ public class ReplyListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-
         final ReplyViewHolder holder = new ReplyViewHolder();
 
         final int pos = position;
@@ -224,7 +223,7 @@ public class ReplyListAdapter extends BaseAdapter {
         holder.ivReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DiscussionFragment.showPopup(holder.replyList, activity);
+                DiscussionFragment.showPopup(holder.replyList, activity, holder.cmtIdx);
             }
         });
 
@@ -269,4 +268,10 @@ public class ReplyListAdapter extends BaseAdapter {
         replyList.add(item);
     }
 
+    public static void setReplyCnt(int cmtIdx, int cnt) {
+        ReplyItem item = replyList.get(cmtIdx);
+        item.setReplyCnt(cnt);
+
+        replyList.set(cmtIdx, item);
+    }
 }

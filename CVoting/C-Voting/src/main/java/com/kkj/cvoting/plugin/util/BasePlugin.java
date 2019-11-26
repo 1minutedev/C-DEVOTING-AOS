@@ -1,19 +1,20 @@
 package com.kkj.cvoting.plugin.util;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
 
+import androidx.fragment.app.FragmentActivity;
+
 public abstract class BasePlugin extends AsyncTask<JSONObject, Void, Void> {
-    private Activity activity;
+    private FragmentActivity activity;
     public CompleteListener listener;
 
-    public Activity getActivity(){
+    public FragmentActivity getActivity() {
         return activity;
     }
 
-    public void setPlugin(Activity activity, CompleteListener listener){
+    public void setPlugin(FragmentActivity activity, CompleteListener listener) {
         this.activity = activity;
         this.listener = listener;
     }

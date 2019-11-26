@@ -6,18 +6,21 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kkj.cvoting.R;
 import com.kkj.cvoting.util.CustomViewPager;
@@ -91,6 +94,9 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
     private ImageView enter;
 
     private String type = "gita";
+    private int idx = 0;
+
+    private static int cmtIdx = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,7 +127,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(popupLayout!=null) {
+                if (popupLayout != null) {
                     if (popupLayout.getVisibility() == View.VISIBLE) {
                         popupLayout.setVisibility(View.GONE);
                         popupLayout.setClickable(false);
@@ -145,13 +151,13 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainFragmentActivity)getActivity()).comeBackHome();
+                ((MainFragmentActivity) getActivity()).comeBackHome();
             }
         });
         btnMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainFragmentActivity)getActivity()).comeBackHome();
+                ((MainFragmentActivity) getActivity()).comeBackHome();
             }
         });
 
@@ -188,8 +194,24 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
                 }
                 break;
             case R.id.iv_enter:
-                addList(etContents.getText().toString());
-                etContents.setText("");
+                String content = etContents.getText().toString();
+                if (TextUtils.isEmpty(content)) {
+                    Toast.makeText(getActivity(), "입력한 내용이 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    addList(etContents.getText().toString());
+                    etContents.setText("");
+
+                    type = "gita";
+
+                    ban.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
+                    ban.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
+
+                    chan.setBackground(getActivity().getResources().getDrawable(R.drawable.circle_unselected));
+                    chan.setTextColor(getActivity().getResources().getColor(R.color.discussion_bottom_text_default));
+
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etContents.getWindowToken(), 0);
+                }
                 break;
             default:
                 break;
@@ -206,7 +228,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
             JSONObject allData = new JSONObject(pref.getString("baseData", ""));
             JSONArray reviewList = allData.getJSONArray("ReviewList");
 
-            int idx = pageData.getInt("idx");
+            idx = pageData.getInt("idx");
 
             for (int i = 0; i < reviewList.length(); i++) {
                 JSONObject reviewData = reviewList.getJSONObject(i);
@@ -372,7 +394,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
 
             dDay = dDayFormat.format(endDate.getTime() - curDate.getTime());
 //            dDay = dDayFormat.format(endDate.getTime() - curDate.getTime() - (60 * 60 * 24 * 1000));
-            tvDday.setText(dDay);
+            tvDday.setText(dDay.startsWith("0") ? (dDay.length() > 1 ? dDay.substring(1) : "0") : dDay);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -408,7 +430,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         llGitaPer.setLayoutParams(gitaPerParams);
     }
 
-    public void refreshPercent(String chanPer, String banPer, String gitaPer){
+    public void refreshPercent(String chanPer, String banPer, String gitaPer) {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int deviceWidth = displayMetrics.widthPixels;
 
@@ -454,8 +476,13 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public static void showPopup(JSONArray data, Activity activity){
+    public static JSONArray replyCmtList;
+
+    public static void showPopup(JSONArray data, Activity activity, int cmtIdx) {
         try {
+            replyCmtList = data;
+            DiscussionFragment.cmtIdx = cmtIdx;
+
             if (popupLayout != null) {
                 if (popupLayout.getVisibility() == View.GONE) {
                     popupLayout.setVisibility(View.VISIBLE);
@@ -463,41 +490,116 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
 
                     llReplyList.removeAllViews();
 
-                    int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, activity.getResources().getDisplayMetrics());
+                    int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, activity.getResources().getDisplayMetrics());
+                    int textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, activity.getResources().getDisplayMetrics());
+                    int lineSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, activity.getResources().getDisplayMetrics());
 
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.setMargins(margin, margin, 0, margin);
+                    params.gravity = Gravity.CENTER_VERTICAL;
+
+                    LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lineSize);
 
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject reply = data.getJSONObject(i);
                         String content = reply.getString("content");
+                        String type = reply.getString("type");
 
-                        TextView tv = new TextView(activity);
-                        tv.setText("***(학부 재학생) : " + content);
-                        tv.setTextColor(Color.parseColor("#000000"));
+                        LinearLayout ll = new LinearLayout(activity);
+                        ll.setOrientation(LinearLayout.HORIZONTAL);
 
-                        llReplyList.addView(tv, params);
+                        TextView tv1 = new TextView(activity);
+                        tv1.setText(type.equals("chan") ? "찬" : type.equals("ban") ? "반" : "기");
+                        tv1.setTextColor(Color.parseColor(type.equals("chan") ? "#097c25" : type.equals("ban") ? "#da0505" : "#b7b7b7"));
+                        tv1.setTextSize(textSize);
+
+                        TextView tv2 = new TextView(activity);
+                        tv2.setText("***(학부 재학생) : " + content);
+                        tv2.setTextColor(Color.parseColor("#000000"));
+
+                        ll.addView(tv1, params);
+                        ll.addView(tv2, params);
+
+                        llReplyList.addView(ll, params);
+
+                        if (i != data.length() - 1) {
+                            View line = new View(activity);
+                            line.setBackgroundColor(Color.parseColor("#acacac"));
+
+                            llReplyList.addView(line, lineParams);
+                        }
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void addList(String content){
-        int margin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getActivity().getResources().getDisplayMetrics());
+    public void addList(final String content) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    SharedPreferences pref = getActivity().getSharedPreferences("default", Context.MODE_PRIVATE);
+                    JSONObject allData = new JSONObject(pref.getString("baseData", ""));
+                    JSONArray reviewList = allData.getJSONArray("ReviewList");
+                    JSONObject review = reviewList.getJSONObject(idx);
+                    JSONArray cmtList = review.getJSONArray("cmtList");
+                    JSONObject cmt = cmtList.getJSONObject(cmtIdx);
+                    JSONArray replyCmtList = cmt.getJSONArray("replyCmtList");
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(margin, margin, 0, margin);
+                    JSONObject replyCmt = new JSONObject();
+                    replyCmt.put("cmt_idx", replyCmtList.length());
+                    replyCmt.put("type", type);
+                    replyCmt.put("content", content);
 
-        TextView tv = new TextView(getActivity());
-        tv.setText("***(학부 재학생) : " + content);
-        tv.setTextColor(Color.parseColor("#000000"));
+                    DiscussionFragment.replyCmtList.put(replyCmt);
+                    replyCmtList.put(replyCmt);
 
-        llReplyList.addView(tv, params);
+                    ReplyListAdapter.setReplyCnt(DiscussionFragment.cmtIdx, DiscussionFragment.replyCmtList.length());
 
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("baseData", allData.toString());
+                    editor.commit();
 
-        svReplyList.fullScroll(View.FOCUS_DOWN);
+                    int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getActivity().getResources().getDisplayMetrics());
+                    int textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 5, getActivity().getResources().getDisplayMetrics());
+                    int lineSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getActivity().getResources().getDisplayMetrics());
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(margin, margin, 0, margin);
+                    params.gravity = Gravity.CENTER_VERTICAL;
+
+                    LinearLayout ll = new LinearLayout(getActivity());
+                    ll.setOrientation(LinearLayout.HORIZONTAL);
+
+                    TextView tv1 = new TextView(getActivity());
+                    tv1.setText(type.equals("chan") ? "찬" : type.equals("ban") ? "반" : "기");
+                    tv1.setTextColor(Color.parseColor(type.equals("chan") ? "#097c25" : type.equals("ban") ? "#da0505" : "#b7b7b7"));
+                    tv1.setTextSize(textSize);
+
+                    TextView tv2 = new TextView(getActivity());
+                    tv2.setText("***(학부 재학생) : " + content);
+                    tv2.setTextColor(Color.parseColor("#000000"));
+
+                    ll.addView(tv1, params);
+                    ll.addView(tv2, params);
+
+                    LinearLayout.LayoutParams lineParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, lineSize);
+
+                    View line = new View(getActivity());
+                    line.setBackgroundColor(Color.parseColor("#acacac"));
+
+                    llReplyList.addView(line, lineParams);
+                    llReplyList.addView(ll, params);
+
+                    svReplyList.fullScroll(View.FOCUS_DOWN);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 }

@@ -104,56 +104,49 @@ public class MainFragmentActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         if (getFragmentList().size() < 4) {
-            finishCnt++;
+            boolean closeFragment = true;
 
-            if (finishCnt > 1) {
-                for (int i = getFragmentListSize() - 1; i >= 0; i--) {
-                    Fragment fragment = getFragmentList().get(i);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .remove(fragment)
-                            .commitAllowingStateLoss();
-                    removeFragment(fragment);
+            final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
+            if (currentFragment instanceof MainFragment) {
+                if (((MainFragment) currentFragment).webView.canGoBack()) {
+                    closeFragment = false;
+                    ((MainFragment) currentFragment).webView.goBack();
                 }
-                finish();
-            } else {
-                Toast.makeText(this, "한 번 더 이전 버튼을 누르면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finishCnt = 0;
-                    }
-                }, term);
             }
-            return;
+
+            if (closeFragment) {
+                finishCnt++;
+                if (finishCnt > 1) {
+                    for (int i = getFragmentListSize() - 1; i >= 0; i--) {
+                        Fragment fragment = getFragmentList().get(i);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .remove(fragment)
+                                .commitAllowingStateLoss();
+                        removeFragment(fragment);
+                    }
+                    finish();
+                } else {
+                    Toast.makeText(this, "한 번 더 이전 버튼을 누르면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finishCnt = 0;
+                        }
+                    }, term);
+                }
+                return;
+            }
         } else {
-            if (getFragmentList().size() > 1) {
-                boolean closeFragment = true;
+            final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
+            final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
 
-                final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
-
-                if (currentFragment instanceof MainFragment) {
-                    if (((MainFragment) currentFragment).webView.canGoBack()) {
-                        closeFragment = false;
-                        ((MainFragment) currentFragment).webView.goBack();
-                    }
-                }
-
-                if (closeFragment) {
-                    final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
-
-                    getSupportFragmentManager()
-                            .beginTransaction()
-//                            .setCustomAnimations(getResources().getIdentifier("hold", "anim", getPackageName()), getResources().getIdentifier("anim_slide_out_right", "anim", getPackageName()))
-                            .remove(currentFragment)
-                            .show(showFragment)
-                            .commitAllowingStateLoss();
-                    removeFragment(currentFragment);
-                }
-            } else {
-                finish();
-                removeFragment(getFragmentList().get(getFragmentListSize() - 1));
-            }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(currentFragment)
+                    .show(showFragment)
+                    .commitAllowingStateLoss();
+            removeFragment(currentFragment);
         }
     }
 
@@ -239,7 +232,7 @@ public class MainFragmentActivity extends FragmentActivity {
         if (requestCode == 0) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     nextProcess();
                 } else {
                     Toast.makeText(getApplicationContext(), "앱에서 필요한 권한이 없습니다.", Toast.LENGTH_LONG).show();

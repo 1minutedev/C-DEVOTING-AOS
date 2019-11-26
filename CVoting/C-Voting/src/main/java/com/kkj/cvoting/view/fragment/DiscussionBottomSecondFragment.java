@@ -135,18 +135,6 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
         enter.setOnClickListener(this);
     }
 
-    private void setReplyData(File file) {
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            String jsonStr = inputStreamToString(fis);
-            JSONObject replyData = new JSONObject(jsonStr);
-            Log.e("wonmin", "replyData : " + replyData);
-            fis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

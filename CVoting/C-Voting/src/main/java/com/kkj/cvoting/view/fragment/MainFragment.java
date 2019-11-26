@@ -1,6 +1,7 @@
 package com.kkj.cvoting.view.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,6 @@ import androidx.fragment.app.Fragment;
 public class MainFragment extends Fragment {
     private View wrapper;
     public KKJWebView webView = null;
-
-    private boolean clearHistory = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class MainFragment extends Fragment {
 
     private void initWebView() {
         webView = wrapper.findViewById(R.id.wv_main);
-        webView.setWebViewClient(new KKJWebViewClient());
+        webView.setWebViewClient(new KKJWebViewClient(getActivity()));
         webView.setWebChromeClient(new KKJWebChromeClient());
 
         WebSettings settings = webView.getSettings();
@@ -82,5 +81,8 @@ public class MainFragment extends Fragment {
     public void loadWebView() {
         String url = ((Init) getActivity().getApplication()).getStartPage();
         webView.loadUrl(url);
+    }
+
+    public void onPagefinished(WebView view, String url) {
     }
 }
