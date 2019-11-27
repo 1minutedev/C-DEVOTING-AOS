@@ -16,6 +16,7 @@ import com.kkj.cvoting.plugin.GetImagePick;
 import com.kkj.cvoting.util.ConfigVariable;
 import com.kkj.cvoting.view.activity.SettingActivity;
 import com.kkj.cvoting.view.fragment.DiscussionFragment;
+import com.kkj.cvoting.view.fragment.LoginFragment;
 import com.kkj.cvoting.view.fragment.MainFragment;
 import com.kkj.cvoting.view.fragment.SplashFragment;
 
@@ -147,6 +148,28 @@ public class MainFragmentActivity extends FragmentActivity {
                     ((DiscussionFragment)currentFragment).closePopup();
                     return;
                 }
+            } else if(showFragment instanceof LoginFragment){
+                finishCnt++;
+                if (finishCnt > 1) {
+                    for (int i = getFragmentListSize() - 1; i >= 0; i--) {
+                        Fragment fragment = getFragmentList().get(i);
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .remove(fragment)
+                                .commitAllowingStateLoss();
+                        removeFragment(fragment);
+                    }
+                    finish();
+                } else {
+                    Toast.makeText(this, "한 번 더 이전 버튼을 누르면 앱을 종료합니다.", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            finishCnt = 0;
+                        }
+                    }, term);
+                }
+                return;
             }
 
             getSupportFragmentManager()

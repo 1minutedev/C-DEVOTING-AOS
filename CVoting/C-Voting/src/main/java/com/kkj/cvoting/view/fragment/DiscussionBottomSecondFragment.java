@@ -85,7 +85,11 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
         try {
             pageData = new JSONObject(data.getString("pageData"));
             idx = pageData.getInt("idx");
-            cmtList = pageData.getJSONArray("cmtList");
+            if(pageData.has("cmtList")) {
+                cmtList = pageData.getJSONArray("cmtList");
+            } else {
+                cmtList = new JSONArray();
+            }
 
             init();
 
@@ -224,6 +228,8 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
     @Override
     public void onDestroy() {
         super.onDestroy();
-        adapter.removeList();
+        if(adapter.getCount() > 0) {
+            adapter.removeList();
+        }
     }
 }

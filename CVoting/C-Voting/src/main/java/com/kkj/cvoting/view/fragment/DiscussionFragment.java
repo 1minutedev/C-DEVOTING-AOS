@@ -273,7 +273,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
 
             double chanPer = chanCnt * 100 / totalCnt;
             double banPer = banCnt * 100 / totalCnt;
-            int gitaPer = 100 - (int) chanPer - (int) banPer;
+            int gitaPer = gitaCnt == 0 ? 0 : 100 - (int) chanPer - (int) banPer;
 
             this.chanPer = String.valueOf((int) chanPer);
             this.banPer = String.valueOf((int) banPer);
@@ -415,12 +415,21 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         tvBan.setText(banPer + "%");
         tvGita.setText(gitaPer + "%");
 
+        int cPer = Integer.parseInt(chanPer);
+        int bPer = Integer.parseInt(banPer);
+        int gPer = Integer.parseInt(gitaPer);
+
+        if(cPer == 0 && bPer == 0 && gPer == 0){
+            cPer = 33;
+            bPer = 33;
+        }
+
         LinearLayout.LayoutParams chanPerParams = (LinearLayout.LayoutParams) llChanPer.getLayoutParams();
-        chanPerParams.width = deviceWidth * Integer.parseInt(chanPer) / 100;
+        chanPerParams.width = deviceWidth * cPer / 100;
         llChanPer.setLayoutParams(chanPerParams);
 
         LinearLayout.LayoutParams banPerParams = (LinearLayout.LayoutParams) llBanPer.getLayoutParams();
-        banPerParams.width = deviceWidth * Integer.parseInt(banPer) / 100;
+        banPerParams.width = deviceWidth * bPer / 100;
         llBanPer.setLayoutParams(banPerParams);
 
         LinearLayout.LayoutParams gitaPerParams = (LinearLayout.LayoutParams) llGitaPer.getLayoutParams();
