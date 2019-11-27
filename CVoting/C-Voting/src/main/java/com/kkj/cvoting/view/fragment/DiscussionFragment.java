@@ -271,8 +271,8 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
                 gitaCnt = discussionPageData.getInt("neutCnt");
             }
 
-            double chanPer = chanCnt * 100 / totalCnt;
-            double banPer = banCnt * 100 / totalCnt;
+            double chanPer = chanCnt == 0 ? 0 : chanCnt * 100 / totalCnt;
+            double banPer = banCnt == 0 ? 0 : banCnt * 100 / totalCnt;
             int gitaPer = gitaCnt == 0 ? 0 : 100 - (int) chanPer - (int) banPer;
 
             this.chanPer = String.valueOf((int) chanPer);
