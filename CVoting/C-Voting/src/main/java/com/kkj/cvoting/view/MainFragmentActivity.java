@@ -156,9 +156,9 @@ public class MainFragmentActivity extends FragmentActivity {
                     .commitAllowingStateLoss();
             removeFragment(currentFragment);
 
-            if(showFragment instanceof MainFragment){
-                ((MainFragment)showFragment).loadWebView();
-            }
+//            if(showFragment instanceof MainFragment){
+//                ((MainFragment)showFragment).loadWebView();
+//            }
         }
     }
 
