@@ -221,23 +221,9 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
         }
     }
 
-    private void saveData(){
-
-    }
-
-    private String inputStreamToString(InputStream is) {
-        StringBuffer out = new StringBuffer();
-        byte[] b = new byte[4096];
-        try {
-            String str = "";
-            for (int n; (n = is.read(b)) != -1; ) {
-                str = new String(b, 0, n);
-                if (!str.equals("\n") && !str.equals("\t") && !str.equals("\r"))
-                    out.append(new String(b, 0, n));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return out.toString();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adapter.removeList();
     }
 }

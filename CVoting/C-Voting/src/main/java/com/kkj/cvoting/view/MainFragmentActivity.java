@@ -111,6 +111,7 @@ public class MainFragmentActivity extends FragmentActivity {
                 if (((MainFragment) currentFragment).webView.canGoBack()) {
                     closeFragment = false;
                     ((MainFragment) currentFragment).webView.goBack();
+                    return;
                 }
             }
 
@@ -141,12 +142,23 @@ public class MainFragmentActivity extends FragmentActivity {
             final Fragment currentFragment = getFragmentList().get(getFragmentListSize() - 1);
             final Fragment showFragment = getFragmentList().get(getFragmentListSize() - 2);
 
+            if(currentFragment instanceof DiscussionFragment){
+                if(DiscussionFragment.showingPopup){
+                    ((DiscussionFragment)currentFragment).closePopup();
+                    return;
+                }
+            }
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .remove(currentFragment)
                     .show(showFragment)
                     .commitAllowingStateLoss();
             removeFragment(currentFragment);
+
+            if(showFragment instanceof MainFragment){
+                ((MainFragment)showFragment).loadWebView();
+            }
         }
     }
 

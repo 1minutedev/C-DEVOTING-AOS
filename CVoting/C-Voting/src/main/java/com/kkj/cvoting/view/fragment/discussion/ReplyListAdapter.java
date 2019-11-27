@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import androidx.appcompat.app.AlertDialog;
 
 public class ReplyListAdapter extends BaseAdapter {
-    private static ArrayList<ReplyItem> replyList = new ArrayList<ReplyItem>();
+    private static ArrayList<ReplyItem> replyList;
 
     private TextView userName = null;
     private TextView contents = null;
@@ -38,6 +38,9 @@ public class ReplyListAdapter extends BaseAdapter {
     private int idx;
 
     public ReplyListAdapter(ListView view, Activity activity, int idx) {
+        replyList = new ArrayList<ReplyItem>();
+
+
         mListView = view;
         this.activity = activity;
         this.idx = idx;
@@ -60,7 +63,6 @@ public class ReplyListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
         final ReplyViewHolder holder = new ReplyViewHolder();
 
         final int pos = position;
@@ -77,23 +79,23 @@ public class ReplyListAdapter extends BaseAdapter {
         holder.replyList = replyItem.getReplyList();
 
         if (type.equals("chan")) {
-            view = inflater.inflate(R.layout.fragment_discussion_bottom2_item1, parent, false);
-            holder.tvGoodCnt = (TextView) view.findViewById(R.id.tv_good_cnt);
-            holder.ivGood = (ImageView) view.findViewById(R.id.iv_good);
+            convertView = inflater.inflate(R.layout.fragment_discussion_bottom2_item1, parent, false);
+            holder.tvGoodCnt = (TextView) convertView.findViewById(R.id.tv_good_cnt);
+            holder.ivGood = (ImageView) convertView.findViewById(R.id.iv_good);
         } else if (type.equals("ban")) {
-            view = inflater.inflate(R.layout.fragment_discussion_bottom2_item2, parent, false);
-            holder.tvGoodCnt = (TextView) view.findViewById(R.id.tv_good_cnt);
-            holder.ivGood = (ImageView) view.findViewById(R.id.iv_good);
+            convertView = inflater.inflate(R.layout.fragment_discussion_bottom2_item2, parent, false);
+            holder.tvGoodCnt = (TextView) convertView.findViewById(R.id.tv_good_cnt);
+            holder.ivGood = (ImageView) convertView.findViewById(R.id.iv_good);
         } else {
-            view = inflater.inflate(R.layout.fragment_discussion_bottom2_item3, parent, false);
+            convertView = inflater.inflate(R.layout.fragment_discussion_bottom2_item3, parent, false);
         }
 
-        holder.tvUser = (TextView) view.findViewById(R.id.tv_user_name);
-        holder.tvContents = (TextView) view.findViewById(R.id.tv_contents);
-        holder.tvReplyCnt = (TextView) view.findViewById(R.id.tv_reply_cnt);
+        holder.tvUser = (TextView) convertView.findViewById(R.id.tv_user_name);
+        holder.tvContents = (TextView) convertView.findViewById(R.id.tv_contents);
+        holder.tvReplyCnt = (TextView) convertView.findViewById(R.id.tv_reply_cnt);
 
-        holder.ivReply = (ImageView) view.findViewById(R.id.iv_reply);
-        holder.ivPiyong = (ImageView) view.findViewById(R.id.iv_piyong);
+        holder.ivReply = (ImageView) convertView.findViewById(R.id.iv_reply);
+        holder.ivPiyong = (ImageView) convertView.findViewById(R.id.iv_piyong);
 
         if (holder.tvGoodCnt != null) {
             holder.tvGoodCnt.setText(String.valueOf(replyItem.getGoodCnt()));
@@ -248,9 +250,9 @@ public class ReplyListAdapter extends BaseAdapter {
             }
         });
 
-        view.setTag(holder);
+        convertView.setTag(holder);
 
-        return view;
+        return convertView;
     }
 
     public void addItem(int num, String type, String user, String contents, int goodCnt, int replyCnt, boolean isGood, JSONArray list) {
@@ -273,5 +275,9 @@ public class ReplyListAdapter extends BaseAdapter {
         item.setReplyCnt(cnt);
 
         replyList.set(cmtIdx, item);
+    }
+
+    public void removeList(){
+        replyList = null;
     }
 }

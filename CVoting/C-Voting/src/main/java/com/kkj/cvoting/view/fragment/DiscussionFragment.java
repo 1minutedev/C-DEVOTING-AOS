@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -97,7 +98,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
     private int idx = 0;
 
     private static int cmtIdx = 0;
-
+    public static boolean showingPopup = false;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +116,8 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         super.onActivityCreated(savedInstanceState);
         wrapper.setClickable(true);
 
+        showingPopup = false;
+
         getData();
         setLayout();
 
@@ -127,12 +130,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (popupLayout != null) {
-                    if (popupLayout.getVisibility() == View.VISIBLE) {
-                        popupLayout.setVisibility(View.GONE);
-                        popupLayout.setClickable(false);
-                    }
-                }
+                closePopup();
             }
         });
 
@@ -479,6 +477,8 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
     public static JSONArray replyCmtList;
 
     public static void showPopup(JSONArray data, Activity activity, int cmtIdx) {
+        showingPopup = true;
+
         try {
             replyCmtList = data;
             DiscussionFragment.cmtIdx = cmtIdx;
@@ -533,6 +533,16 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void closePopup(){
+        showingPopup = false;
+        if (popupLayout != null) {
+            if (popupLayout.getVisibility() == View.VISIBLE) {
+                popupLayout.setVisibility(View.GONE);
+                popupLayout.setClickable(false);
+            }
         }
     }
 
