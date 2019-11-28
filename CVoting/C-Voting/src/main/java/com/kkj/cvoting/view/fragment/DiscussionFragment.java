@@ -271,13 +271,19 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
                 gitaCnt = discussionPageData.getInt("neutCnt");
             }
 
-            double chanPer = chanCnt == 0 ? 0 : chanCnt * 100 / totalCnt;
-            double banPer = banCnt == 0 ? 0 : banCnt * 100 / totalCnt;
-            int gitaPer = gitaCnt == 0 ? 0 : 100 - (int) chanPer - (int) banPer;
+            if(totalCnt == 0){
+                this.chanPer = "0";
+                this.banPer = "0";
+                this.gitaPer = "0";
+            } else {
+                double chanPer = chanCnt == 0 ? 0 : chanCnt * 100 / totalCnt;
+                double banPer = banCnt == 0 ? 0 : banCnt * 100 / totalCnt;
+                int gitaPer = gitaCnt == 0 ? 0 : 100 - (int) chanPer - (int) banPer;
 
-            this.chanPer = String.valueOf((int) chanPer);
-            this.banPer = String.valueOf((int) banPer);
-            this.gitaPer = String.valueOf(gitaPer);
+                this.chanPer = String.valueOf((int) chanPer);
+                this.banPer = String.valueOf((int) banPer);
+                this.gitaPer = String.valueOf(gitaPer);
+            }
 
             bottomFirstPageData = new JSONObject();
             bottomFirstPageData.put("idx", idx);

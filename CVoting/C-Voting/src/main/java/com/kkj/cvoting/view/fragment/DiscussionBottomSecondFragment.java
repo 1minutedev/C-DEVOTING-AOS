@@ -202,6 +202,7 @@ public class DiscussionBottomSecondFragment extends Fragment implements View.OnC
                             cmtList = review.getJSONArray("cmtList");
                         } else {
                             cmtList = new JSONArray();
+                            review.put("cmtList", cmtList);
                         }
 
                         JSONObject cmt = new JSONObject();

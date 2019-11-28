@@ -110,8 +110,8 @@ public class DiscussionBottomFirstFragment extends Fragment implements View.OnCl
             JSONObject data = new JSONObject(pref.getString("baseData", ""));
             JSONArray reviewList = data.getJSONArray("ReviewList");
             JSONObject review = reviewList.getJSONObject(idx);
-            if(review.has("type")){
-                type = review.getString("type");
+            if(review.has("type2")){
+                type = review.getString("type2");
             }
 
             if(type.equals("chan")){
@@ -274,7 +274,7 @@ public class DiscussionBottomFirstFragment extends Fragment implements View.OnCl
             review.put("agreeCnt", chanCnt);
             review.put("oppCnt", banCnt);
             review.put("neutCnt", gitaCnt);
-            review.put("type", type);
+            review.put("type2", type);
 
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("baseData", data.toString());

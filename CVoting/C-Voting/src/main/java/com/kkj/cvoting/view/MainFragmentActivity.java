@@ -172,16 +172,16 @@ public class MainFragmentActivity extends FragmentActivity {
                 return;
             }
 
+            if(showFragment instanceof MainFragment){
+                ((MainFragment)showFragment).loadWebView();
+            }
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .remove(currentFragment)
                     .show(showFragment)
                     .commitAllowingStateLoss();
             removeFragment(currentFragment);
-
-//            if(showFragment instanceof MainFragment){
-//                ((MainFragment)showFragment).loadWebView();
-//            }
         }
     }
 
